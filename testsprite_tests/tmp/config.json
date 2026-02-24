@@ -1,0 +1,17 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "executionArgs": {
+    "projectName": "IOS APP (Audio APP Like Auraly)",
+    "projectPath": "c:\\Users\\naeem\\Documents\\Websites\\IOS APP (Audio APP Like Auraly)",
+    "testIds": [
+      "TC001"
+    ],
+    "additionalInstruction": "Execute ONLY TC001 (Instagram Share) to get a quick result. Do not run other tests.",
+    "envs": {
+      "API_KEY": "YOUR_API_KEY_HERE"
+    }
+  }
+}

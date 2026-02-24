@@ -1,0 +1,259 @@
+The goal is to perform comprehensive end-to-end testing of the Auraly audio learning app using TestSprite. This includes testing all features, screens, flows, performance, and specifically the share functionality from scratch.
+
+User Review Required
+IMPORTANT
+
+Flutter Environment Required
+
+The command flutter devices failed, indicating Flutter is not in PATH
+Before proceeding with testing, we need to ensure Flutter can be run
+The user may need to provide the full path to Flutter or add it to PATH
+IMPORTANT
+
+Physical Device or Emulator Required
+
+Testing requires a running device (physical iPhone/Android or emulator)
+Share functionality testing MUST be done on physical device (emulators can't receive actual share intents from Instagram/YouTube/TikTok apps)
+User needs to confirm which device they want to use for testing
+IMPORTANT
+
+TestSprite MCP Status
+
+According to 
+.testsprite/FIX_APPLIED.md
+, TestSprite MCP was configured but requires IDE restart
+User needs to confirm if IDE was restarted and TestSprite is now connected
+If not connected, we'll use manual testing combined with Flutter unit tests
+Proposed Testing Approach
+Phase 1: Setup & Environment Verification
+Verify Flutter Installation
+
+Confirm Flutter is accessible
+Check connected devices
+Verify app builds successfully
+Verify TestSprite Connection
+
+Check if TestSprite MCP tools are available
+If not available, proceed with manual testing + unit tests
+Phase 2: Unit & Widget Tests
+Existing Tests to Run
+test/share_extension_test.dart
+Platform detection (Instagram, YouTube, TikTok)
+Memo creation from URLs
+Unique ID generation
+Data persistence
+Processing delay validation
+New Tests to Create
+Navigation Tests (new file: test/navigation_test.dart)
+
+Test all routes defined in 
+app_router.dart
+Verify onboarding flow completion
+Test memo detail navigation with proper data passing
+Audio Player Tests (new file: test/audio_player_test.dart)
+
+Test speed cycling (0.75x → 1.0x → 1.5x)
+Test play/pause functionality
+Test progress tracking
+Flashcard Tests (new file: test/flashcards_test.dart)
+
+Test card swipe functionality
+Test flip animation
+Test progress tracking
+Phase 3: Manual Integration Testing on Device
+3.1 Onboarding Flow
+Test Steps:
+
+Fresh install (or clear app data)
+Launch app
+Complete landing screen → quiz → pitch → tutorial
+Verify navigation to home screen
+Confirm isOnboardingComplete persists
+Expected Results:
+
+Smooth transitions between screens
+Quiz selections work correctly
+Tutorial swipe gestures functional
+No UI glitches or lag
+3.2 Home Screen & Memo Management
+Test Steps:
+
+Verify "Recent Memos" tab displays properly
+Test filter chips (All, Instagram, YouTube, TikTok)
+Test "Add Memo" modal
+Tap on memo card → verify navigation to detail screen
+Test memo list scrolling performance
+Expected Results:
+
+Filters work correctly
+Smooth 60fps scrolling
+Platform icons display correctly
+Images load within 1 second
+3.3 Share Functionality (Critical Test)
+WARNING
+
+Requires Physical Device Share intents from real apps (Instagram/YouTube/TikTok) cannot be tested on emulators
+
+Test Scenario A: Cold Start - Instagram Share
+
+Close app completely (swipe from recent apps)
+Open Instagram app
+Find any post/reel
+Tap Share → Select "auraly_clone"
+Language sheet should appear
+Select "English"
+Processing screen displays (3 seconds)
+Memo detail screen opens
+Press back
+Verify memo appears in home screen with Instagram icon
+Test Scenario B: Warm Start - YouTube Share
+
+App running in background
+Open YouTube app
+Find any video
+Tap Share → Select "auraly_clone"
+Same flow as above
+Verify YouTube icon displays
+Test Scenario C: Multiple Rapid Shares
+
+Share 3 different links rapidly (Instagram → TikTok → YouTube)
+Complete each flow
+Verify all 3 memos appear in list
+Verify newest memo at top
+Verify correct platform icons
+Test Scenario D: Invalid URL Handling
+
+Share from unsupported app (e.g., Twitter)
+Verify graceful handling (should still work with mock data)
+3.4 Memo Detail Screen
+Test Steps:
+
+Open any memo from home screen
+Test all tabs: Summary, Transcript, Vocabulary, Grammar, Conjugation
+Audio Player Testing:
+Press play → verify playback starts
+Test speed toggle: 🐢 0.75x (Green) → 🎧 1.0x (Blue) → ⚡ 1.5x (Red)
+Test progress bar scrubbing
+Test pause functionality
+Scroll through transcript
+Test vocabulary cards layout
+Expected Results:
+
+Tab switching smooth
+Audio plays correctly
+Speed changes apply immediately with color indicators
+Sticky player stays visible when scrolling
+No lag during tab switches
+3.5 Flashcards Screen
+Test Steps:
+
+From memo detail, navigate to flashcards
+Tap card → verify flip animation
+Swipe right/left to navigate
+Verify progress bar updates
+Complete all cards → check end state
+Expected Results:
+
+Flip animation smooth (300ms)
+Swipe gestures responsive
+Progress accurate
+No frame drops
+3.6 Quiz Screen
+Test Steps:
+
+Navigate to quiz from memo
+Answer all questions
+Verify confetti animation on completion
+Check score calculation
+Expected Results:
+
+Question transitions smooth
+Confetti displays on success
+Score accurate
+Phase 4: Performance Testing
+4.1 App Launch Time
+Measure cold start time (app closed → home screen)
+Measure warm start time (app backgrounded → resumed)
+Target: Cold start < 3 seconds
+4.2 Memory Usage
+Monitor memory during typical usage
+Check for memory leaks during extended use
+Target: < 150MB for typical session
+4.3 Frame Rate Analysis
+Test scrolling in memo list (should maintain 60fps)
+Test flashcard animations (should be smooth)
+Test audio player scrubbing (should be responsive)
+4.4 Image Loading
+Test thumbnail loading in memo list
+Test full images in memo detail
+Target: Thumbnails < 500ms, Full images < 1 second
+Phase 5: Edge Cases & Error Handling
+Tests:
+
+Network Issues
+
+Turn off WiFi during share
+Verify fallback to cached/mock data
+Interruptions
+
+Phone call during audio playback
+Share intent while processing another
+App minimize during critical operations
+Data Persistence
+
+Close app mid-processing
+Restart app → verify memos persist
+Clear cache → verify graceful degradation
+Boundary Conditions
+
+Share 20+ memos → test list performance
+Very long transcript → test scroll performance
+Rapid audio speed changes
+Verification Plan
+Automated Testing (Unit Tests)
+bash
+# Run all existing tests
+flutter test
+# Run specific test file
+flutter test test/share_extension_test.dart
+# Run with coverage
+flutter test --coverage
+Manual Testing Checklist
+All tests from Phase 3, Phase 4, and Phase 5 will be performed manually on device with detailed documentation of:
+
+Screenshots of each screen state
+Recording of animations and transitions
+Performance metrics (using DevTools if available)
+Any bugs or issues encountered
+TestSprite Automated Testing (if available)
+If TestSprite MCP is connected, we will:
+
+Create automated UI test scripts for critical flows
+Generate visual regression baselines
+Run performance benchmarks
+Generate comprehensive test reports
+Deliverables
+Test Execution Report (test_report.md)
+
+Results for all test scenarios
+Pass/fail status for each test
+Screenshots and recordings
+Performance metrics
+Bug Report (bugs_found.md)
+
+Detailed list of any bugs discovered
+Steps to reproduce
+Severity classification
+Suggested fixes
+Performance Report (performance_report.md)
+
+Launch time analysis
+Memory usage patterns
+Frame rate analysis
+Image loading performance
+Share Functionality Report (share_functionality_report.md)
+
+Dedicated report for share feature
+Test results for each platform (Instagram, YouTube, TikTok)
+Cold/warm start behavior
+Data persistence validation

@@ -1,0 +1,9 @@
+.env
+temp/
+static/audio/
+__pycache__/
+*.pyc
+.venv/
+venv/
+cookies.txt
+.dart_tool/

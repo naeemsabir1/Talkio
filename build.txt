@@ -1,0 +1,999 @@
+﻿Resolving dependencies...
+Downloading packages...
+  archive 4.0.7 (4.0.9 available)
+  audio_session 0.1.25 (0.2.2 available)
+  characters 1.4.0 (1.4.1 available)
+  confetti 0.7.0 (0.8.0 available)
+  ffi 2.1.5 (2.2.0 available)
+  fl_chart 0.66.2 (1.1.1 available)
+  flutter_launcher_icons 0.13.1 (0.14.4 available)
+  flutter_lints 3.0.2 (6.0.0 available)
+  flutter_riverpod 2.6.1 (3.2.1 available)
+  go_router 13.2.5 (17.1.0 available)
+  google_fonts 6.3.3 (8.0.2 available)
+  hooks 1.0.0 (1.0.1 available)
+  image 4.7.2 (4.8.0 available)
+  json_annotation 4.10.0 (4.11.0 available)
+  just_audio 0.9.46 (0.10.5 available)
+  lints 3.0.0 (6.1.0 available)
+  matcher 0.12.17 (0.12.18 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.17.0 (1.18.1 available)
+  objective_c 9.2.5 (9.3.0 available)
+  petitparser 7.0.1 (7.0.2 available)
+  riverpod 2.6.1 (3.2.1 available)
+  source_span 1.10.1 (1.10.2 available)
+  test_api 0.7.7 (0.7.9 available)
+  vector_graphics_compiler 1.1.20 (1.2.0 available)
+Got dependencies!
+25 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleDebug'...                          
+C:\flutter_sdk\flutter
+\bin\flutter.bat : lib
+/features/onboarding/s
+creens/quiz_screen.dar
+t:19:58: Error: Can't 
+find '}' to match '{'.
+At line:1 char:1
++ C:\flutter_sdk\flutt
+er\bin\flutter.bat 
+build apk --debug > 
+build_erro ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (lib/featur   
+ es/on...' to matc    
+h '{'.:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+class 
+_QuizScreenState 
+extends ConsumerState<
+QuizScreen> {
+                      
+                      
+             ^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:471:1: Error: 
+Classes can't be 
+declared inside other 
+classes.
+Try moving the class 
+to the top-level.
+class 
+_AnimatedLanguageCard 
+extends 
+StatelessWidget {
+^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:471:29: Error: 
+Expected a class 
+member, but got 
+'extends'.
+class 
+_AnimatedLanguageCard 
+extends 
+StatelessWidget {
+                      
+      ^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:471:37: Error: A 
+method declaration 
+needs an explicit 
+list of parameters.
+Try adding a 
+parameter list to the 
+method declaration.
+class 
+_AnimatedLanguageCard 
+extends 
+StatelessWidget {
+                      
+              
+^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:535:1: Error: 
+Classes can't be 
+declared inside other 
+classes.
+Try moving the class 
+to the top-level.
+class 
+_BouncyOptionButton 
+extends 
+StatefulWidget {
+^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:535:27: Error: 
+Expected a class 
+member, but got 
+'extends'.
+class 
+_BouncyOptionButton 
+extends 
+StatefulWidget {
+                      
+    ^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:535:35: Error: A 
+method declaration 
+needs an explicit 
+list of parameters.
+Try adding a 
+parameter list to the 
+method declaration.
+class 
+_BouncyOptionButton 
+extends 
+StatefulWidget {
+                      
+            
+^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:550:1: Error: 
+Classes can't be 
+declared inside other 
+classes.
+Try moving the class 
+to the top-level.
+class _BouncyOptionBut
+tonState extends State
+<_BouncyOptionButton>
+^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:550:32: Error: 
+Expected a class 
+member, but got 
+'extends'.
+class _BouncyOptionBut
+tonState extends State
+<_BouncyOptionButton>
+                      
+         ^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:550:40: Error: A 
+method declaration 
+needs an explicit 
+list of parameters.
+Try adding a 
+parameter list to the 
+method declaration.
+class _BouncyOptionBut
+tonState extends State
+<_BouncyOptionButton>
+                      
+                 ^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:551:5: Error: 
+Expected '{' before 
+this.
+    with SingleTickerP
+roviderStateMixin {
+    ^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:551:5: Error: 
+Expected a class 
+member, but got 
+'with'.
+    with SingleTickerP
+roviderStateMixin {
+    ^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:551:10: Error: A 
+method declaration 
+needs an explicit 
+list of parameters.
+Try adding a 
+parameter list to the 
+method declaration.
+    with SingleTickerP
+roviderStateMixin {
+         ^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:112:17: Error: 
+Local variable '_build
+ExpandedLanguagePage' 
+can't be referenced 
+before it is declared.
+                _build
+ExpandedLanguagePage(n
+otifier),
+                ^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:221:10: Context: 
+This is the 
+declaration of the 
+variable '_buildExpand
+edLanguagePage'.
+  Widget _buildExpande
+dLanguagePage(QuizNoti
+fier notifier) {
+         ^^^^^^^^^^^^^
+^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:114:17: Error: 
+Local variable '_build
+AnimatedListPage' 
+can't be referenced 
+before it is declared.
+                _build
+AnimatedListPage(
+                
+^^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:275:10: Context: 
+This is the 
+declaration of the 
+variable '_buildAnimat
+edListPage'.
+  Widget _buildAnimate
+dListPage(
+         
+^^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:124:17: Error: 
+Local variable '_build
+AnimatedListPage' 
+can't be referenced 
+before it is declared.
+                _build
+AnimatedListPage(
+                
+^^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:275:10: Context: 
+This is the 
+declaration of the 
+variable '_buildAnimat
+edListPage'.
+  Widget _buildAnimate
+dListPage(
+         
+^^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:133:17: Error: 
+Local variable '_build
+GlassMultiSelectPage' 
+can't be referenced 
+before it is declared.
+                _build
+GlassMultiSelectPage(
+                ^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:306:10: Context: 
+This is the 
+declaration of the 
+variable '_buildGlassM
+ultiSelectPage'.
+  Widget _buildGlassMu
+ltiSelectPage(
+         ^^^^^^^^^^^^^
+^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:147:17: Error: 
+Local variable '_build
+GlassMultiSelectPage' 
+can't be referenced 
+before it is declared.
+                _build
+GlassMultiSelectPage(
+                ^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:306:10: Context: 
+This is the 
+declaration of the 
+variable '_buildGlassM
+ultiSelectPage'.
+  Widget _buildGlassMu
+ltiSelectPage(
+         ^^^^^^^^^^^^^
+^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:157:17: Error: 
+Local variable '_build
+GlassMultiSelectPage' 
+can't be referenced 
+before it is declared.
+                _build
+GlassMultiSelectPage(
+                ^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:306:10: Context: 
+This is the 
+declaration of the 
+variable '_buildGlassM
+ultiSelectPage'.
+  Widget _buildGlassMu
+ltiSelectPage(
+         ^^^^^^^^^^^^^
+^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:165:17: Error: 
+Local variable '_build
+GlassMultiSelectPage' 
+can't be referenced 
+before it is declared.
+                _build
+GlassMultiSelectPage(
+                ^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:306:10: Context: 
+This is the 
+declaration of the 
+variable '_buildGlassM
+ultiSelectPage'.
+  Widget _buildGlassMu
+ltiSelectPage(
+         ^^^^^^^^^^^^^
+^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:141:17: Error: 
+Local variable '_build
+ConfidencePage' can't 
+be referenced before 
+it is declared.
+                
+_buildConfidencePage(
+                
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:367:10: Context: 
+This is the 
+declaration of the 
+variable '_buildConfid
+encePage'.
+  Widget _buildConfide
+ncePage(String title, 
+QuizState state, 
+QuizNotifier 
+notifier) {
+         
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:155:17: Error: 
+Local variable '_build
+DemographicsPage' 
+can't be referenced 
+before it is declared.
+                _build
+DemographicsPage(state
+, notifier),
+                
+^^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:407:10: Context: 
+This is the 
+declaration of the 
+variable '_buildDemogr
+aphicsPage'.
+  Widget _buildDemogra
+phicsPage(QuizState 
+state, QuizNotifier 
+notifier) {
+         
+^^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:112:17: Error: 
+The method '_buildExpa
+ndedLanguagePage' 
+isn't defined for the 
+type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_buildExpandedL
+anguagePage'.
+                _build
+ExpandedLanguagePage(n
+otifier),
+                ^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:114:17: Error: 
+The method '_buildAnim
+atedListPage' isn't 
+defined for the type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_buildAnimatedL
+istPage'.
+                _build
+AnimatedListPage(
+                
+^^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:124:17: Error: 
+The method '_buildAnim
+atedListPage' isn't 
+defined for the type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_buildAnimatedL
+istPage'.
+                _build
+AnimatedListPage(
+                
+^^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:133:17: Error: 
+The method '_buildGlas
+sMultiSelectPage' 
+isn't defined for the 
+type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_buildGlassMult
+iSelectPage'.
+                _build
+GlassMultiSelectPage(
+                ^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:141:17: Error: 
+The method '_buildConf
+idencePage' isn't 
+defined for the type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_buildConfidenc
+ePage'.
+                
+_buildConfidencePage(
+                
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:147:17: Error: 
+The method '_buildGlas
+sMultiSelectPage' 
+isn't defined for the 
+type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_buildGlassMult
+iSelectPage'.
+                _build
+GlassMultiSelectPage(
+                ^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:155:17: Error: 
+The method '_buildDemo
+graphicsPage' isn't 
+defined for the type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_buildDemograph
+icsPage'.
+                _build
+DemographicsPage(state
+, notifier),
+                
+^^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:157:17: Error: 
+The method '_buildGlas
+sMultiSelectPage' 
+isn't defined for the 
+type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_buildGlassMult
+iSelectPage'.
+                _build
+GlassMultiSelectPage(
+                ^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:165:17: Error: 
+The method '_buildGlas
+sMultiSelectPage' 
+isn't defined for the 
+type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_buildGlassMult
+iSelectPage'.
+                _build
+GlassMultiSelectPage(
+                ^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:255:24: Error: 
+The method '_AnimatedL
+anguageCard' isn't 
+defined for the type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_AnimatedLangua
+geCard'.
+                
+return 
+_AnimatedLanguageCard(
+                      
+ ^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:293:22: Error: 
+The method 
+'_BouncyOptionButton' 
+isn't defined for the 
+type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named 
+'_BouncyOptionButton'.
+              child: 
+_BouncyOptionButton(
+                     
+^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:461:37: Error: 
+Property 'isNotEmpty' 
+cannot be accessed on 
+'String?' because it 
+is potentially null.
+Try accessing using 
+?. instead.
+            
+isEnabled: state.gende
+r.isNotEmpty,
+                      
+              
+^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:477:14: Error: 
+Expected ',' before 
+this.
+    required 
+this.label,
+             ^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:478:14: Error: 
+Expected ',' before 
+this.
+    required 
+this.isSelected,
+             ^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:479:14: Error: 
+Expected ',' before 
+this.
+    required 
+this.onTap,
+             ^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:476:9: Error: 
+Not a constant 
+expression.
+  const _AnimatedLangu
+ageCard({
+        
+^^^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:485:14: Error: 
+Final variable 
+'onTap' must be 
+assigned before it 
+can be used.
+      onTap: onTap,
+             ^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:491:18: Error: 
+Final variable 
+'isSelected' must be 
+assigned before it 
+can be used.
+          color: 
+isSelected
+                 
+^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:496:20: Error: 
+Final variable 
+'isSelected' must be 
+assigned before it 
+can be used.
+            color: 
+isSelected
+                   
+^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:499:20: Error: 
+Final variable 
+'isSelected' must be 
+assigned before it 
+can be used.
+            width: 
+isSelected ? 2.0 : 
+1.0,
+                   
+^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:501:22: Error: 
+Final variable 
+'isSelected' must be 
+assigned before it 
+can be used.
+          boxShadow: 
+isSelected
+                     
+^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:519:13: Error: 
+Final variable 
+'label' must be 
+assigned before it 
+can be used.
+            label,
+            ^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:522:27: Error: 
+Final variable 
+'isSelected' must be 
+assigned before it 
+can be used.
+              
+fontWeight: 
+isSelected ? 
+FontWeight.w700 : 
+FontWeight.w500,
+                      
+    ^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:541:14: Error: 
+Expected ',' before 
+this.
+    required 
+this.label,
+             ^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:542:14: Error: 
+Expected ',' before 
+this.
+    required 
+this.onTap,
+             ^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:543:16: Error: 
+Not a constant 
+expression.
+    this.delay = 0,
+               ^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:540:9: Error: 
+Not a constant 
+expression.
+  const 
+_BouncyOptionButton({
+        
+^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:547:9: Error: 
+'_BouncyOptionButton' 
+isn't a type.
+  State<_BouncyOptionB
+utton> createState() 
+=> _BouncyOptionButton
+State();
+        
+^^^^^^^^^^^^^^^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:547:3: Error: 
+'State' isn't a type.
+  State<_BouncyOptionB
+utton> createState() 
+=> _BouncyOptionButton
+State();
+  ^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:547:47: Error: 
+The method '_BouncyOpt
+ionButtonState' isn't 
+defined for the type 
+'_QuizScreenState'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named '_BouncyOptionBu
+ttonState'.
+  State<_BouncyOptionB
+utton> createState() 
+=> _BouncyOptionButton
+State();
+                      
+                      
+  ^^^^^^^^^^^^^^^^^^^^
+^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:561:14: Error: 
+The argument type 
+'_QuizScreenState' 
+can't be assigned to 
+the parameter type 
+'TickerProvider'.
+ - '_QuizScreenState' 
+is from 'package:aural
+y_clone/features/onboa
+rding/screens/quiz_scr
+een.dart' ('lib/featur
+es/onboarding/screens/
+quiz_screen.dart').
+ - 'TickerProvider' 
+is from 'package:flutt
+er/src/scheduler/ticke
+r.dart' ('/C:/flutter_
+sdk/flutter/packages/f
+lutter/lib/src/schedul
+er/ticker.dart').
+      vsync: this,
+             ^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:578:16: Error: 
+The method 'onTap' 
+isn't defined for the 
+type 'QuizScreen'.
+ - 'QuizScreen' is 
+from 'package:auraly_c
+lone/features/onboardi
+ng/screens/quiz_screen
+.dart' ('lib/features/
+onboarding/screens/qui
+z_screen.dart').
+Try correcting the 
+name to the name of 
+an existing method, 
+or defining a method 
+named 'onTap'.
+        
+widget.onTap();
+               ^^^^^
+lib/features/onboardin
+g/screens/quiz_screen.
+dart:592:18: Error: 
+The getter 'label' 
+isn't defined for the 
+type 'QuizScreen'.
+ - 'QuizScreen' is 
+from 'package:auraly_c
+lone/features/onboardi
+ng/screens/quiz_screen
+.dart' ('lib/features/
+onboarding/screens/qui
+z_screen.dart').
+Try correcting the 
+name to the name of 
+an existing getter, 
+or defining a getter 
+or field named 
+'label'.
+          
+widget.label,
+                 ^^^^^
+Target kernel_snapshot
+_program failed: 
+Exception
+
+
+FAILURE: Build failed 
+with an exception.
+
+* What went wrong:
+Execution failed for 
+task ':app:compileFlut
+terBuildDebug'.
+> Process 'command 'C:
+\flutter_sdk\flutter\b
+in\flutter.bat'' 
+finished with 
+non-zero exit value 1
+
+* Try:
+> Run with 
+--stacktrace option 
+to get the stack 
+trace.
+> Run with --info or 
+--debug option to get 
+more log output.
+> Run with --scan to 
+get full insights.
+> Get more help at htt
+ps://help.gradle.org.
+
+BUILD FAILED in 14s
+Running Gradle task 'assembleDebug'...                             15.0s
+Gradle task 
+assembleDebug failed 
+with exit code 1

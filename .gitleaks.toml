@@ -1,0 +1,27 @@
+# Gitleaks Configuration
+# Prevents accidental secret leaks in git commits
+# Install: https://github.com/gitleaks/gitleaks
+# Usage: gitleaks detect --source . --config .gitleaks.toml
+
+title = "Auraly Secret Scanning"
+
+# Detect OpenAI API keys
+[[rules]]
+id = "openai-api-key"
+description = "OpenAI API Key detected"
+regex = '''sk-[a-zA-Z0-9_-]{20,}'''
+tags = ["key", "openai"]
+
+# Detect generic API keys in code
+[[rules]]
+id = "generic-api-key"
+description = "Possible API key in source code"
+regex = '''(?i)(api[_-]?key|apikey|secret[_-]?key)\s*[:=]\s*['"][a-zA-Z0-9_-]{20,}['"]'''
+tags = ["key", "generic"]
+
+# Allow .env.example to have placeholder keys
+[allowlist]
+paths = [
+  '''.env\.example''',
+  '''\.gitleaks\.toml''',
+]

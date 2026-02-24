@@ -1,0 +1,51 @@
+{
+    "tech_stack": [
+        "Flutter",
+        "Dart",
+        "Riverpod",
+        "GoRouter",
+        "Just Audio",
+        "Flutter Animate"
+    ],
+    "features": [
+        {
+            "name": "Share Extension Processing",
+            "description": "Handles incoming share intents, determines platform, saves memo to global state, and navigates to detail screen.",
+            "files": [
+                "lib/features/home/screens/processing_screen.dart",
+                "lib/core/services/share_service.dart",
+                "lib/core/services/mock_content_service.dart"
+            ]
+        },
+        {
+            "name": "Memo Detail View",
+            "description": "Displays detailed content of a memo including summary, transcript, vocabulary, grammar, and conjugations.",
+            "files": [
+                "lib/features/memo/screens/memo_detail_screen.dart",
+                "lib/core/widgets/dark_grammar_card.dart",
+                "lib/core/widgets/glass_card.dart"
+            ]
+        },
+        {
+            "name": "Import Flow",
+            "description": "UI for selecting language after sharing content.",
+            "files": [
+                "lib/core/widgets/import_language_sheet.dart"
+            ]
+        },
+        {
+            "name": "Audio Player",
+            "description": "Sticky audio player with speed controls.",
+            "files": [
+                "lib/features/memo/screens/memo_detail_screen.dart"
+            ]
+        },
+        {
+            "name": "Home Screen",
+            "description": "Lists recent memos and allows filtering.",
+            "files": [
+                "lib/features/home/screens/home_screen.dart"
+            ]
+        }
+    ]
+}

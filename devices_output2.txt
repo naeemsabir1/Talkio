@@ -1,0 +1,9 @@
+Found 4 connected devices:
+  SM A235F (mobile) G求 R58W3188TXM G求 android-arm64  G求 Android 14 (API 34)
+  Windows (desktop) G求 windows     G求 windows-x64    G求 Microsoft Windows [Version 10.0.19045.6466]
+  Chrome (web)      G求 chrome      G求 web-javascript G求 Google Chrome 145.0.7632.109
+  Edge (web)        G求 edge        G求 web-javascript G求 Microsoft Edge 145.0.3800.58
+
+Run "flutter emulators" to list and start any available device emulators.
+
+If you expected another device to be detected, please run "flutter doctor" to diagnose potential issues. You may also try increasing the time to wait for connected devices with the "--device-timeout" flag. Visit https://flutter.dev/setup/ for troubleshooting tips.

@@ -1,0 +1,61 @@
+name: auraly_clone
+description: Talkio - Learn languages with AI.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.4.9
+  go_router: ^13.0.1
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.9
+  percent_indicator: ^4.2.3
+  shared_preferences: ^2.2.2
+  fl_chart: ^0.66.0
+  just_audio: ^0.9.36
+  flutter_card_swiper: ^7.0.1
+  confetti: ^0.7.0
+  flutter_animate: ^4.5.0
+  receive_sharing_intent: ^1.5.0
+  http: ^1.2.0
+  url_launcher: ^6.3.1
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.6
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/images/
+    - assets/images/onboarding_1.png
+    - assets/images/onboarding_2.png
+    - assets/images/onboarding_3.png
+    - assets/images/pitch_chart.png
+    - assets/images/pitch_thinking.png
+    - assets/images/pitch_waving.png
+    - assets/images/tutorial_1.png
+    - assets/images/tutorial_2.png
+    - assets/images/tutorial_3.png
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.jpeg"
+  remove_alpha_ios: true
+  min_sdk_android: 21
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/logo.jpeg"
+  android_12:
+    image: "assets/logo.jpeg"
+    color: "#FFFFFF"
+  fullscreen: true

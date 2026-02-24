@@ -1,0 +1,415 @@
+[
+  {
+    "id": "TC001",
+    "title": "Successful Share Extension Memo Creation for Instagram",
+    "description": "Validate that sharing content from Instagram creates a new memo, correctly identifies the platform, and navigates to the memo detail screen.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Share content from Instagram to the Auraly app."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the platform is recognized as Instagram."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that a new memo is created and saved in the global state."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify navigation to the Memo Detail View of the newly created memo."
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Share Extension Handling with Unsupported Platform",
+    "description": "Verify that sharing content from an unsupported platform results in graceful error handling without app crash.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Attempt to share content from an unsupported app (e.g., Facebook) to Auraly."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that an appropriate error message is displayed to the user."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that no memo is created in the global state."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the app remains stable and does not crash or freeze."
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Audio Player Playback Controls Functionality",
+    "description": "Check audio player functionalities including play, pause, and progress tracking during audio playback in memo detail view.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to memo detail screen with a valid audio memo."
+      },
+      {
+        "type": "action",
+        "description": "Press play button on the sticky audio player."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify audio playback starts and progress bar updates accordingly."
+      },
+      {
+        "type": "action",
+        "description": "Press pause button."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify audio playback pauses and progress bar stops updating."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Audio Player Speed Control Cycling",
+    "description": "Verify the speed control button cycles playback speed through 0.75x, 1.0x, and 1.5x correctly and updates playback speed accordingly.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to memo detail screen with audio playback."
+      },
+      {
+        "type": "action",
+        "description": "Click speed control button once."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify playback speed is set to 0.75x."
+      },
+      {
+        "type": "action",
+        "description": "Click speed control button again."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify playback speed is set to 1.0x."
+      },
+      {
+        "type": "action",
+        "description": "Click speed control button a third time."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify playback speed is set to 1.5x."
+      },
+      {
+        "type": "action",
+        "description": "Click speed control button a fourth time."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify playback speed cycles back to 0.75x."
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Home Screen Memo List Displays and Filters",
+    "description": "Validate that the home screen lists memos properly, displays platform icons, and filters memos based on selected platform.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Launch the app and navigate to home screen."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the memo list displays all recent memos."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that each memo displays the correct platform icon (Instagram, YouTube, TikTok)."
+      },
+      {
+        "type": "action",
+        "description": "Use platform filter to select only Instagram memos."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that only memos shared from Instagram are displayed."
+      },
+      {
+        "type": "action",
+        "description": "Clear filter and select TikTok memos."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that only memos shared from TikTok are displayed."
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Memo Detail Tabs Display and Content Verification",
+    "description": "Verify each memo detail tab (summary, transcript, vocabulary, grammar, conjugations) loads correctly and displays the correct data.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open a memo detail screen with full content."
+      },
+      {
+        "type": "action",
+        "description": "Navigate to Summary tab."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify summary text is displayed and accurate."
+      },
+      {
+        "type": "action",
+        "description": "Navigate to Transcript tab."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify transcript content is correctly rendered."
+      },
+      {
+        "type": "action",
+        "description": "Navigate to Vocabulary tab."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify vocabulary list is displayed with correct entries."
+      },
+      {
+        "type": "action",
+        "description": "Navigate to Grammar tab."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify grammar cards are correctly displayed with proper formatting."
+      },
+      {
+        "type": "action",
+        "description": "Navigate to Conjugations tab."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify conjugations data is accurate and visible."
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Import Flow Language Selection After Sharing",
+    "description": "Validate the import language selection sheet appears after content sharing and properly records user language choice.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Share content from a supported platform into Auraly."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the import language selection UI sheet is displayed."
+      },
+      {
+        "type": "action",
+        "description": "Select a language from the list."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the selected language is saved and associated with the new memo."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify navigation proceeds to the memo detail screen after language selection."
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Flashcards Swipe and Flip Animations",
+    "description": "Verify that flashcards can be swiped left and right and flipped, and animations perform smoothly without glitches.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to flashcards screen starting from a memo detail."
+      },
+      {
+        "type": "action",
+        "description": "Swipe flashcard to the left."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify next flashcard is displayed with smooth swipe animation."
+      },
+      {
+        "type": "action",
+        "description": "Swipe flashcard to the right."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify previous flashcard is displayed with smooth swipe animation."
+      },
+      {
+        "type": "action",
+        "description": "Tap flashcard to flip it."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify card flips to show other side with smooth animation."
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Quiz Feature Completion and Scoring",
+    "description": "Validate quiz participation flow from answering questions to receiving a final score and confetti animation on completion.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Start a quiz from a memo."
+      },
+      {
+        "type": "action",
+        "description": "Answer all quiz questions."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that score is calculated correctly based on answers."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify confetti animation is shown upon quiz completion."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify option to retake or exit quiz is presented."
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Onboarding Flow Persistence Across Restarts",
+    "description": "Verify that onboarding completion status persists after app restarts and onboarding screens are not shown again.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Install app fresh and complete onboarding flow."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify onboarding is marked completed in persistent storage."
+      },
+      {
+        "type": "action",
+        "description": "Close and restart the app."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify app lands directly on home screen without onboarding screens."
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "UI Responsiveness and Smooth Scrolling",
+    "description": "Test UI performance by verifying scrolling in memo lists and animations maintain 60fps and no visible lag.",
+    "category": "performance",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to home screen with a large list of memos."
+      },
+      {
+        "type": "action",
+        "description": "Scroll rapidly up and down through memo list."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify scrolling is smooth with no dropped frames or jank."
+      },
+      {
+        "type": "action",
+        "description": "Navigate to flashcards and quiz animations."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify swipe, flip, and confetti animations perform smoothly without stutter."
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Graceful Handling of Network Outages During Memo Fetch",
+    "description": "Verify app behavior when network outages occur during memo data fetching and playback.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate network outage while opening app and fetching memo data."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify app displays network error message and option to retry."
+      },
+      {
+        "type": "action",
+        "description": "Retry fetching after restoring network."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify memos load correctly and audio playback is functional."
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Performance Metrics for Launch Time and Memory Usage",
+    "description": "Measure and verify that app launch time is under 3 seconds and memory usage stays below 150MB on supported devices.",
+    "category": "performance",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Close app completely."
+      },
+      {
+        "type": "action",
+        "description": "Launch the app on a typical supported device."
+      },
+      {
+        "type": "assertion",
+        "description": "Measure and verify app fully loads home screen in less than 3 seconds."
+      },
+      {
+        "type": "assertion",
+        "description": "Monitor memory usage during launch and verify it remains below 150MB."
+      }
+    ]
+  }
+]

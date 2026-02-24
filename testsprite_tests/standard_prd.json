@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "project": "Auraly Audio Learning App Testing",
+    "date": "2026-02-04",
+    "prepared_by": "Software Development Manager"
+  },
+  "product_overview": "Auraly is an audio learning app focusing on memo creation and playback from shared multimedia content. The main goals of this testing project are to ensure comprehensive end-to-end functionality including share extension handling, memo management, audio playback, and user interface flows across multiple platforms.",
+  "core_goals": [
+    "Validate full end-to-end app functionality across all features and flows",
+    "Ensure reliable share extension processing from supported platforms (Instagram, YouTube, TikTok)",
+    "Verify audio player features including speed control and playback stability",
+    "Confirm smooth UI performance and responsiveness under normal and edge case conditions",
+    "Identify and document any bugs or performance issues for resolution"
+  ],
+  "key_features": [
+    "Share Extension Processing supporting multiple platforms with memo creation and navigation",
+    "Detailed Memo View displaying summary, transcript, vocabulary, grammar and conjugations",
+    "Sticky Audio Player with speed control cycling through 0.75x, 1.0x, and 1.5x speeds and progress tracking",
+    "Home Screen with memo list, filtering by platform, and memo navigation",
+    "Import Flow for language selection after sharing content",
+    "Flashcards with swipe and flip animations to reinforce learning",
+    "Quiz feature with completion confetti and score calculation"
+  ],
+  "user_flow_summary": [
+    "Onboarding Flow from fresh install through landing, quiz, pitch, tutorial, and completion",
+    "Share Flow from content sharing on external apps into Auraly with language selection and memo processing",
+    "Home Screen interaction including memo browsing, filtering, and navigation to memo details",
+    "Memo Detail Screen usage with tab navigation across content types and audio playback controls",
+    "Flashcards exploration starting from memo details with swipe and flip interactions",
+    "Quiz participation from memo with question answering and final scoring"
+  ],
+  "validation_criteria": [
+    "Successful memo creation and accurate platform recognition from share intents",
+    "Audio playback functionality with responsive play, pause, speed change, and scrubbing",
+    "UI responsiveness maintaining 60fps smoothness during scrolling and animations",
+    "Correct filter function behavior and platform icon display in memo lists",
+    "Persistence of onboarding completion and memo data across app restarts",
+    "Graceful error handling for unsupported share sources and network outages",
+    "Performance metrics including launch time under 3 seconds and memory usage below 150MB",
+    "Comprehensive coverage by automated tests plus extensive manual validation on physical devices for share functionality"
+  ],
+  "code_summary": {
+    "tech_stack": [
+      "Flutter",
+      "Dart",
+      "Riverpod",
+      "GoRouter",
+      "Just Audio",
+      "Flutter Animate"
+    ],
+    "features": [
+      {
+        "name": "Share Extension Processing",
+        "description": "Handles incoming share intents, determines platform, saves memo to global state, and navigates to detail screen.",
+        "files": [
+          "lib/features/home/screens/processing_screen.dart",
+          "lib/core/services/share_service.dart",
+          "lib/core/services/mock_content_service.dart"
+        ]
+      },
+      {
+        "name": "Memo Detail View",
+        "description": "Displays detailed content of a memo including summary, transcript, vocabulary, grammar, and conjugations.",
+        "files": [
+          "lib/features/memo/screens/memo_detail_screen.dart",
+          "lib/core/widgets/dark_grammar_card.dart",
+          "lib/core/widgets/glass_card.dart"
+        ]
+      },
+      {
+        "name": "Import Flow",
+        "description": "UI for selecting language after sharing content.",
+        "files": [
+          "lib/core/widgets/import_language_sheet.dart"
+        ]
+      },
+      {
+        "name": "Audio Player",
+        "description": "Sticky audio player with speed controls.",
+        "files": [
+          "lib/features/memo/screens/memo_detail_screen.dart"
+        ]
+      },
+      {
+        "name": "Home Screen",
+        "description": "Lists recent memos and allows filtering.",
+        "files": [
+          "lib/features/home/screens/home_screen.dart"
+        ]
+      }
+    ]
+  }
+}
