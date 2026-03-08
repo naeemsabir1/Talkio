@@ -304,7 +304,7 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           GestureDetector(
-                            onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/docs/terms.html')),
+                            onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/terms.html')),
                             child: const Text(
                               'Terms of Service',
                               style: TextStyle(
@@ -316,7 +316,7 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                           ),
                           const SizedBox(width: 16),
                           GestureDetector(
-                            onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/docs/privacy.html')),
+                            onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/privacy.html')),
                             child: const Text(
                               'Privacy Policy',
                               style: TextStyle(

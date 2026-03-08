@@ -548,7 +548,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/docs/terms.html')),
+                onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/terms.html')),
                 child: Text(
                   'paywall.terms_of_service'.tr(),
                   style: const TextStyle(color: Colors.white38, fontSize: 12, decoration: TextDecoration.underline),
@@ -556,7 +556,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               ),
               const SizedBox(width: 16),
               GestureDetector(
-                onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/docs/privacy.html')),
+                onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/privacy.html')),
                 child: Text(
                   'paywall.privacy_policy'.tr(),
                   style: const TextStyle(color: Colors.white38, fontSize: 12, decoration: TextDecoration.underline),
