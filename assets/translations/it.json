@@ -1,0 +1,97 @@
+{
+    "home": {
+        "greeting": "Ciao, {}",
+        "subtitle": "Pronto per la tua prossima lezione di lingua?",
+        "memo_button": "Memo",
+        "search_hint": "Trova memo...",
+        "filter_all": "Tutti",
+        "empty_title": "Ancora nessun memo...",
+        "empty_subtitle": "Inizia il tuo viaggio di apprendimento importando un link video qui sopra.",
+        "action_see_memo": "Vedi Memo",
+        "action_cards": "Carte",
+        "action_quiz": "Quiz",
+        "nav_home": "Home",
+        "nav_profile": "Profilo"
+    },
+    "memo_detail": {
+        "save_success": "✨ Memo creato con successo!",
+        "saved_library": "Memo salvato nella libreria!",
+        "quit": "Esci",
+        "save": "Salva"
+    },
+    "memo_sections": {
+        "summary": "Riassunto",
+        "transcription": "Trascrizione",
+        "translation": "Traduzione",
+        "vocabulary": "Vocabolario",
+        "pronouns": "Pronomi",
+        "grammar": "Grammatica",
+        "conjugation": "Coniugazione"
+    },
+    "profile": {
+        "settings_preferences": "Impostazioni e Preferenze",
+        "account_settings": "Impostazioni account",
+        "account_settings_subtitle": "Gestisci fatturazione e piano",
+        "language_target": "Lingua obiettivo",
+        "language_target_subtitle": "Cambia ciò che impari",
+        "help_center": "Centro assistenza",
+        "help_center_subtitle": "FAQ e supporto",
+        "profile_section": "PROFILO",
+        "name": "Nome",
+        "delete_account": "Elimina account",
+        "delete_account_confirm_title": "Eliminare l'account?",
+        "delete_account_confirm_msg": "Questo cancellerà permanentemente tutti i tuoi memo, impostazioni e dati dell'app. Questa azione non può essere annullata.",
+        "delete_confirm": "Elimina tutto",
+        "cancel": "Annulla",
+        "log_out": "Disconnetti",
+        "log_out_confirm_title": "Disconnettersi?",
+        "log_out_confirm_msg": "Questo cancellerà tutti i dati della tua app e ti disconnetterà.",
+        "log_out_confirm": "Disconnetti",
+        "claim_rewards": "Richiedi premi gratuiti"
+    },
+    "help_center": {
+        "title": "Centro assistenza",
+        "faq_header": "DOMANDE FREQUENTI",
+        "faq_q1": "Come importo un video?",
+        "faq_a1": "Copia semplicemente il link di un Reel di Instagram o di un video TikTok. Poi apri Talkio, tocca il pulsante 'Memo' nella schermata principale, incolla l'URL e lascia che Talkio estragga automaticamente audio e trascrizione per il tuo apprendimento.",
+        "faq_q2": "Come cambiare la lingua di traduzione?",
+        "faq_a2": "Quando importi un nuovo video, ti verrà chiesto di selezionare una lingua obiettivo prima dell'elaborazione. Puoi anche aggiornare la tua lingua obiettivo predefinita in Profilo > Lingua obiettivo.",
+        "faq_q3": "Perché l'elaborazione di un video è fallita?",
+        "faq_a3": "Questo di solito accade se il link è rotto, il video è privato o se il creatore ha disabilitato la condivisione. Prova a importare un link video pubblico diverso."
+    },
+    "data_table": {
+        "word": "Parola",
+        "pronunciation": "Pronuncia",
+        "meaning": "Significato",
+        "explanation": "Spiegazione",
+        "form": "Forma",
+        "example": "Esempio",
+        "translation": "Traduzione"
+    },
+    "paywall": {
+        "headline": "Gli studenti Talkio Pro hanno 5.2x probabilità in più di essere fluenti!",
+        "features": {
+            "full_access": "Accesso Totale!",
+            "full_access_desc": "Premium con tutte le funzionalità",
+            "smart_video": "Apprendimento Video Intelligente",
+            "smart_video_desc": "Impara da Reels, TikTok e altro!",
+            "personalized": "Progresso Personalizzato",
+            "personalized_desc": "Si adatta al tuo livello e ritmo",
+            "unlimited_vocab": "Vocabolario Illimitato",
+            "unlimited_vocab_desc": "Accedi a migliaia di parole utili"
+        },
+        "monthly": "Mensile",
+        "yearly": "Annuale",
+        "7_days_free": "7 Giorni Gratis",
+        "cta_trial": "Inizia prova gratuita di 7 giorni",
+        "cta_continue": "Continua",
+        "restore_purchases": "Ripristina acquisti",
+        "terms_of_service": "Termini di servizio",
+        "privacy_policy": "Informativa privacy",
+        "cancel_anytime": "Annulla in qualsiasi momento.",
+        "loading": "Caricamento...",
+        "error_purchase": "Acquisto non riuscito. Per favore riprova.",
+        "error_restore": "Ripristino non riuscito.",
+        "error_loading_products": "Impossibile caricare i prezzi."
+    }
+}

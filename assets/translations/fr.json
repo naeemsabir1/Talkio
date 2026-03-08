@@ -1,0 +1,97 @@
+{
+    "home": {
+        "greeting": "Salut, {}",
+        "subtitle": "Prêt pour votre prochaine leçon de langue ?",
+        "memo_button": "Mémo",
+        "search_hint": "Trouver un mémo...",
+        "filter_all": "Tout",
+        "empty_title": "Pas encore de mémos...",
+        "empty_subtitle": "Commencez votre apprentissage en important un lien vidéo ci-dessus.",
+        "action_see_memo": "Voir Mémo",
+        "action_cards": "Cartes",
+        "action_quiz": "Quiz",
+        "nav_home": "Accueil",
+        "nav_profile": "Profil"
+    },
+    "memo_detail": {
+        "save_success": "✨ Mémo créé avec succès !",
+        "saved_library": "Mémo sauvegardé dans la bibliothèque !",
+        "quit": "Quitter",
+        "save": "Sauvegarder"
+    },
+    "memo_sections": {
+        "summary": "Résumé",
+        "transcription": "Transcription",
+        "translation": "Traduction",
+        "vocabulary": "Vocabulaire",
+        "pronouns": "Pronoms",
+        "grammar": "Grammaire",
+        "conjugation": "Conjugaison"
+    },
+    "profile": {
+        "settings_preferences": "Paramètres et Préférences",
+        "account_settings": "Paramètres du compte",
+        "account_settings_subtitle": "Gérer la facturation et le plan",
+        "language_target": "Langue cible",
+        "language_target_subtitle": "Changez ce que vous apprenez",
+        "help_center": "Centre d'aide",
+        "help_center_subtitle": "FAQ et support",
+        "profile_section": "PROFIL",
+        "name": "Nom",
+        "delete_account": "Supprimer le compte",
+        "delete_account_confirm_title": "Supprimer le compte ?",
+        "delete_account_confirm_msg": "Cela effacera définitivement tous vos mémos, paramètres et données de l'application. Cette action est irréversible.",
+        "delete_confirm": "Tout supprimer",
+        "cancel": "Annuler",
+        "log_out": "Se déconnecter",
+        "log_out_confirm_title": "Se déconnecter ?",
+        "log_out_confirm_msg": "Cela effacera toutes les données de votre application et vous déconnectera.",
+        "log_out_confirm": "Se déconnecter",
+        "claim_rewards": "Réclamer les récompenses gratuites"
+    },
+    "help_center": {
+        "title": "Centre d'aide",
+        "faq_header": "FOIRE AUX QUESTIONS",
+        "faq_q1": "Comment importer une vidéo ?",
+        "faq_a1": "Copiez simplement le lien d'un Reel Instagram ou d'une vidéo TikTok. Ouvrez ensuite Talkio, appuyez sur le bouton 'Mémo' sur l'écran d'accueil, collez l'URL et laissez Talkio extraire automatiquement l'audio et la transcription pour votre apprentissage.",
+        "faq_q2": "Comment changer la langue de traduction ?",
+        "faq_a2": "Lorsque vous importez une nouvelle vidéo, vous serez invité à sélectionner une langue cible avant le traitement. Vous pouvez également mettre à jour votre langue cible par défaut dans Profil > Langue cible.",
+        "faq_q3": "Pourquoi une vidéo n'a-t-elle pas pu être traitée ?",
+        "faq_a3": "Cela se produit généralement si le lien est cassé, si la vidéo est privée ou si le créateur a désactivé le partage. Essayez d'importer un lien vidéo public différent."
+    },
+    "data_table": {
+        "word": "Mot",
+        "pronunciation": "Prononciation",
+        "meaning": "Signification",
+        "explanation": "Explication",
+        "form": "Forme",
+        "example": "Exemple",
+        "translation": "Traduction"
+    },
+    "paywall": {
+        "headline": "Les étudiants Talkio Pro ont 5,2x plus de chances d'apprendre plus vite et de devenir bilingues !",
+        "features": {
+            "full_access": "Accès Total !",
+            "full_access_desc": "Premium avec toutes les fonctionnalités débloquées",
+            "smart_video": "Apprentissage Vidéo",
+            "smart_video_desc": "Apprenez avec les Reels, TikTok et plus !",
+            "personalized": "Progression Personnalisée",
+            "personalized_desc": "S'adapte à votre niveau et rythme",
+            "unlimited_vocab": "Vocabulaire Illimité",
+            "unlimited_vocab_desc": "Accédez à des milliers de mots utiles"
+        },
+        "monthly": "Mensuel",
+        "yearly": "Annuel",
+        "7_days_free": "7 Jours Gratuits",
+        "cta_trial": "Commencer mon essai gratuit de 7 jours",
+        "cta_continue": "Continuer",
+        "restore_purchases": "Restaurer les achats",
+        "terms_of_service": "Conditions d'utilisation",
+        "privacy_policy": "Politique de confidentialité",
+        "cancel_anytime": "Annulez à tout moment dans les paramètres.",
+        "loading": "Chargement...",
+        "error_purchase": "L'achat a échoué. Veuillez réessayer.",
+        "error_restore": "La restauration a échoué. Veuillez vérifier.",
+        "error_loading_products": "Impossible de charger les prix. Vérifiez votre connexion."
+    }
+}

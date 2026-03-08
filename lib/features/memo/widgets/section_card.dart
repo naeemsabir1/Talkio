@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 class SectionCard extends StatelessWidget {
   final String title;
@@ -16,20 +17,38 @@ class SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final accent = accentColor ?? Colors.white;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 24),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B), // Slate 800
+        // High-performance glassmorphism illusion using gradient instead of BackdropFilter
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFF1E293B).withOpacity(0.7),
+            const Color(0xFF0F172A).withOpacity(0.5),
+          ],
+        ),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: Colors.white.withOpacity(0.05),
-          width: 1,
+          color: Colors.white.withOpacity(0.12),
+          width: 1.2,
         ),
         boxShadow: [
+          // Outer glow with accent color
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: accent.withOpacity(0.06),
+            blurRadius: 24,
+            spreadRadius: -4,
+            offset: const Offset(0, 8),
+          ),
+          // Subtle dark shadow for depth
+          BoxShadow(
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 20,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
@@ -44,12 +63,16 @@ class SectionCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: (accentColor ?? Colors.white).withOpacity(0.1),
+                    color: accent.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: accent.withOpacity(0.15),
+                      width: 0.8,
+                    ),
                   ),
                   child: Icon(
                     icon,
-                    color: accentColor ?? Colors.white,
+                    color: accent,
                     size: 20,
                   ),
                 ),

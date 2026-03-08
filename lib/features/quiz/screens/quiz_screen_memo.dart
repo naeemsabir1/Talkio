@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../core/models/memo_model.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/glass_card.dart';
@@ -26,23 +27,8 @@ class _QuizScreenMemoState extends State<QuizScreenMemo> {
     super.dispose();
   }
 
-  List<QuizQuestion> _generateQuestions() {
-    final questions = <QuizQuestion>[];
-    
-    // Generate vocabulary questions
-    for (var vocab in widget.memo.vocabulary.take(5)) {
-      questions.add(QuizQuestion(
-        question: 'What does "${vocab.word}" mean?',
-        correctAnswer: vocab.definition,
-        wrongAnswers: [
-          'To run quickly',
-          'A type of food',
-          'Feeling tired',
-        ].where((w) => w != vocab.definition).take(2).toList(),
-      ));
-    }
-
-    return questions;
+  List<QuizItem> _getQuestions() {
+    return widget.memo.quiz;
   }
 
   void _checkAnswer(String answer, String correct) {
@@ -58,7 +44,7 @@ class _QuizScreenMemoState extends State<QuizScreenMemo> {
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         setState(() {
-          if (_currentQuestion < _generateQuestions().length - 1) {
+          if (_currentQuestion < _getQuestions().length - 1) {
             _confettiController.stop(); // Stop confetti
             _currentQuestion++;
             _selectedAnswer = null;
@@ -75,8 +61,8 @@ class _QuizScreenMemoState extends State<QuizScreenMemo> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Quiz Complete!'),
-        content: Text('Your score: $_score / ${_generateQuestions().length}'),
+        title: Text('home.action_quiz'.tr() + ' Complete!'),
+        content: Text('Your score: $_score / ${_getQuestions().length}'),
         actions: [
           TextButton(
             onPressed: () {
@@ -104,20 +90,21 @@ class _QuizScreenMemoState extends State<QuizScreenMemo> {
 
   @override
   Widget build(BuildContext context) {
-    final questions = _generateQuestions();
+    final questions = _getQuestions();
     if (questions.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Quiz')),
-        body: const Center(child: Text('No quiz questions available')),
+        appBar: AppBar(title: Text('home.action_quiz'.tr())),
+        body: Center(child: Text('No quiz questions available')),
       );
     }
 
     final question = questions[_currentQuestion];
+    // Keep internal local memory per question shuffle order
     final allAnswers = [question.correctAnswer, ...question.wrongAnswers]..shuffle();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quiz'),
+        title: Text('home.action_quiz'.tr()),
         actions: [
           Center(
             child: Padding(
@@ -151,20 +138,44 @@ class _QuizScreenMemoState extends State<QuizScreenMemo> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  GlassCard(
-                    backgroundColor: AppTheme.primary.withOpacity(0.1),
-                    borderColor: AppTheme.primary.withOpacity(0.3),
-                    child: Text(
-                      question.question,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                    GlassCard(
+                      backgroundColor: AppTheme.primary.withOpacity(0.1),
+                      borderColor: AppTheme.primary.withOpacity(0.3),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            question.question,
+                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          if (question.hint.isNotEmpty && !_answered)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.tips_and_updates, color: Colors.orange, size: 18),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      question.hint,
+                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                        color: Colors.orange.shade800,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  ...allAnswers.map((answer) {
-                    final isSelected = _selectedAnswer == answer;
-                    final isCorrect = answer == question.correctAnswer;
+                    const SizedBox(height: 32),
+                    ...allAnswers.map((answer) {
+                      final isSelected = _selectedAnswer == answer;
+                      final isCorrect = answer == question.correctAnswer;
                     Color? bgColor;
                     Color? borderColor;
 
@@ -221,16 +232,4 @@ class _QuizScreenMemoState extends State<QuizScreenMemo> {
       ),
     );
   }
-}
-
-class QuizQuestion {
-  final String question;
-  final String correctAnswer;
-  final List<String> wrongAnswers;
-
-  QuizQuestion({
-    required this.question,
-    required this.correctAnswer,
-    required this.wrongAnswers,
-  });
 }

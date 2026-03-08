@@ -5,3 +5,4 @@ openai>=1.60.0
 httpx>=0.25.0
 yt-dlp
 pydantic==2.5.3
+pydub>=0.25.1

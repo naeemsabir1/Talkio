@@ -192,7 +192,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                vocab.definition,
+                vocab.meaning,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,

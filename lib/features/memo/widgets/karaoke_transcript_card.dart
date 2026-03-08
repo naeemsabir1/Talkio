@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'section_card.dart';
 import '../../../core/models/memo_model.dart';
 import '../../../core/widgets/karaoke_transcript_widget.dart';
@@ -18,7 +19,7 @@ class KaraokeTranscriptCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      title: 'Transcription',
+      title: 'memo_sections.transcription'.tr(),
       icon: Icons.mic_rounded,
       accentColor: const Color(0xFF3B82F6), // Blue
       child: words.isNotEmpty

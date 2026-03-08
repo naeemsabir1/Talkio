@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'dart:convert';
 import 'dart:ui';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 import '../../../core/services/ai_content_service.dart';
 import '../../../core/models/memo_model.dart';
 import '../../memo/screens/memo_detail_screen.dart';
@@ -11,8 +15,13 @@ import '../widgets/language_picker_sheet.dart';
 
 class ShareProcessingScreen extends StatefulWidget {
   final String sharedUrl;
+  final String? initialLanguage;
   
-  const ShareProcessingScreen({super.key, required this.sharedUrl});
+  const ShareProcessingScreen({
+    super.key, 
+    required this.sharedUrl,
+    this.initialLanguage,
+  });
 
   @override
   State<ShareProcessingScreen> createState() => _ShareProcessingScreenState();
@@ -37,7 +46,7 @@ class _ShareProcessingScreenState extends State<ShareProcessingScreen> {
   // Duration _position = Duration.zero; // Removed unused
   
   final List<String> _statusMessages = [
-    "Importing from Instagram...",
+    "Importing...",
     "Extracting Audio...",
     "Transcribing Speech...",
     "Analyzing Grammar...",
@@ -47,16 +56,21 @@ class _ShareProcessingScreenState extends State<ShareProcessingScreen> {
   @override
   void initState() {
     super.initState();
-    // Show language picker immediately after route transition
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 350), () {
-        if (mounted) _showLanguagePicker();
+    // Use initialLanguage if provided (manual flow), otherwise show picker (share intent)
+    if (widget.initialLanguage != null) {
+      _selectedLanguage = widget.initialLanguage;
+      _isProcessing = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _startProcessing();
       });
-    });
-    // Audio init removed
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.delayed(const Duration(milliseconds: 350), () {
+          if (mounted) _showLanguagePicker();
+        });
+      });
+    }
   }
-
-
 
   void _showLanguagePicker() {
     showModalBottomSheet(
@@ -81,29 +95,141 @@ class _ShareProcessingScreenState extends State<ShareProcessingScreen> {
   }
 
   Future<void> _startProcessing() async {
-    // Animate progress (runs in parallel)
-    _animateProgress();
-    _cycleStatus();
-    
     try {
-      // Call the REAL AI backend
       final service = AiContentService();
-      final memo = await service.processUrl(
+      
+      // Step 1: Extraction & Transcription
+      if (!mounted) return;
+      setState(() {
+        _progress = 0.2;
+        _statusIndex = 0; // "Importing from Instagram..."
+      });
+      
+      var memo = await service.processUrl(
         widget.sharedUrl,
-        'auto',  // Source: auto-detect by Whisper
-        _selectedLanguage ?? 'English',  // Target: user's chosen language
+        'auto',  
+        _selectedLanguage ?? 'English',  
+        context.locale.languageCode, // Pass App UI Language
       );
       
+      // Step 2: AI Copyediting
       if (!mounted) return;
+      setState(() {
+        _progress = 0.5;
+        _statusIndex = 2; // "Transcribing Speech..."
+      });
       
-      // Save memo reference
+      try {
+        if (memo.words.isNotEmpty) {
+          final rawString = memo.words.map((w) => w.word).join(" ");
+          final formattedString = await service.formatTranscriptionWithAI(rawString);
+          final formattedTokens = formattedString.split(RegExp(r'\s+'));
+          
+          final updatedWords = <WordTimestamp>[];
+          int tIndex = 0;
+          for (int i = 0; i < memo.words.length; i++) {
+            final orig = memo.words[i];
+            if (tIndex < formattedTokens.length) {
+               updatedWords.add(WordTimestamp(word: formattedTokens[tIndex], start: orig.start, end: orig.end));
+               tIndex++;
+            } else {
+               updatedWords.add(orig);
+            }
+          }
+
+          final updatedSegments = <TranscriptSegment>[];
+          for (int i = 0; i < memo.transcript.length; i++) {
+            final seg = memo.transcript[i];
+            final nextSegTime = (i + 1 < memo.transcript.length) ? memo.transcript[i + 1].timestamp : double.maxFinite;
+            final segWords = updatedWords.where((w) => w.start >= seg.timestamp && w.start < nextSegTime).map((w) => w.word).join(" ");
+            updatedSegments.add(TranscriptSegment(original: segWords.isNotEmpty ? segWords : seg.original, translation: seg.translation, timestamp: seg.timestamp));
+          }
+
+          memo = Memo(
+            id: memo.id, title: memo.title, sourceUrl: memo.sourceUrl, sourcePlatform: memo.sourcePlatform,
+            thumbnailUrl: memo.thumbnailUrl, date: memo.date, 
+            language: _selectedLanguage ?? memo.language, // Fix Language Regression
+            summary: memo.summary,
+            audioUrl: memo.audioUrl, transcript: updatedSegments, vocabulary: memo.vocabulary, grammar: memo.grammar,
+            conjugations: memo.conjugations, words: updatedWords, quiz: memo.quiz,
+          );
+        }
+      } catch (e) {
+        debugPrint('Copyedit failed, keeping raw: $e');
+      }
+      
+      // Step 3: Download Cover Image
+      if (!mounted) return;
+      setState(() {
+        _progress = 0.8;
+        _statusIndex = 4; // "Finalizing Memo..."
+      });
+      
+      try {
+        String finalAudioUrl = memo.audioUrl;
+        final dir = await getApplicationDocumentsDirectory();
+        
+        // Cache Cover Image Locally
+        if (memo.thumbnailUrl.startsWith('http')) {
+          final imageFile = File('${dir.path}/image_${memo.id}.jpg');
+          final response = await http.get(Uri.parse(memo.thumbnailUrl));
+          await imageFile.writeAsBytes(response.bodyBytes);
+          
+          memo = Memo(
+            id: memo.id, title: memo.title, sourceUrl: memo.sourceUrl, sourcePlatform: memo.sourcePlatform,
+            thumbnailUrl: imageFile.path, date: memo.date, language: memo.language, summary: memo.summary,
+            audioUrl: memo.audioUrl, transcript: memo.transcript, vocabulary: memo.vocabulary, grammar: memo.grammar,
+            conjugations: memo.conjugations, words: memo.words, quiz: memo.quiz,
+          );
+        }
+
+        // Cache TTS Audio Locally
+        // Skip if audioUrl is empty (TTS generation failed on backend)
+        if (memo.audioUrl.isNotEmpty && memo.audioUrl.startsWith('http')) {
+           try {
+             debugPrint('🔊 Downloading TTS audio from: ${memo.audioUrl}');
+             final audioFile = File('${dir.path}/audio_${memo.id}.mp3');
+             final response = await http.get(Uri.parse(memo.audioUrl))
+                 .timeout(const Duration(seconds: 60));
+             if (response.statusCode == 200 && response.bodyBytes.length > 100) {
+               await audioFile.writeAsBytes(response.bodyBytes);
+               // Verify the file was written and has reasonable size
+               if (await audioFile.exists() && await audioFile.length() > 100) {
+                 finalAudioUrl = audioFile.path;
+                 debugPrint('✅ TTS audio cached locally: ${audioFile.path} (${response.bodyBytes.length} bytes)');
+               } else {
+                 debugPrint('⚠️ TTS audio file validation failed, using remote URL as fallback');
+               }
+             } else {
+               debugPrint('⚠️ TTS audio download returned status ${response.statusCode} or empty body, using remote URL as fallback');
+             }
+           } catch (e) {
+             debugPrint('⚠️ Failed to download TTS audio: $e — will use remote URL as fallback');
+             // Keep the remote URL — just_audio can stream it directly
+           }
+        } else if (memo.audioUrl.isEmpty) {
+          debugPrint('⚠️ audioUrl is empty (TTS failed on backend), skipping audio caching');
+        }
+          
+        memo = Memo(
+          id: memo.id, title: memo.title, sourceUrl: memo.sourceUrl, sourcePlatform: memo.sourcePlatform,
+          thumbnailUrl: memo.thumbnailUrl,
+          date: memo.date, 
+          language: _selectedLanguage ?? memo.language, // Keep fixed language 
+          summary: memo.summary, audioUrl: finalAudioUrl, // Use safely cached audio path
+          transcript: memo.transcript, vocabulary: memo.vocabulary, grammar: memo.grammar,
+          conjugations: memo.conjugations, words: memo.words, quiz: memo.quiz,
+        );
+      } catch (e) {
+        debugPrint('Failed to download cover image: $e');
+      }
+      
+      // Step 4: Completion
+      if (!mounted) return;
       _resultMemo = memo;
       
-      // Save to shared prefs for recent memos list
-
-      
-      // Show results with real data
       setState(() {
+        _progress = 1.0;
         _isProcessing = false;
         _showResults = true;
       });
@@ -122,22 +248,6 @@ class _ShareProcessingScreenState extends State<ShareProcessingScreen> {
         _hasError = true;
         _errorMessage = 'Cannot reach the AI server. Make sure the backend is running.';
       });
-    }
-  }
-
-  void _animateProgress() async {
-    for (int i = 0; i <= 100; i++) {
-      if (!mounted || !_isProcessing) return;
-      setState(() => _progress = i / 100);
-      await Future.delayed(const Duration(milliseconds: 50));
-    }
-  }
-
-  void _cycleStatus() async {
-    for (int i = 0; i < _statusMessages.length; i++) {
-      if (!mounted || !_isProcessing) return;
-      setState(() => _statusIndex = i);
-      await Future.delayed(const Duration(milliseconds: 1000));
     }
   }
 
@@ -262,21 +372,33 @@ class _ShareProcessingScreenState extends State<ShareProcessingScreen> {
                       strokeWidth: 10,
                       color: Colors.white.withOpacity(0.08),
                     ),
-                    CircularProgressIndicator(
-                      value: _progress,
-                      strokeWidth: 10,
-                      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF7C3AED)), // Violet
-                      strokeCap: StrokeCap.round,
-                    ),
-                    Center(
-                      child: Text(
-                        '${(_progress * 100).toInt()}%',
-                        style: GoogleFonts.outfit(
-                          color: Colors.white,
-                          fontSize: 48,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0.0, end: _progress),
+                      duration: const Duration(milliseconds: 600),
+                      curve: Curves.easeInOut,
+                      builder: (context, value, child) {
+                        return Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            CircularProgressIndicator(
+                              value: value,
+                              strokeWidth: 10,
+                              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF7C3AED)), // Violet
+                              strokeCap: StrokeCap.round,
+                            ),
+                            Center(
+                              child: Text(
+                                '${(value * 100).toInt()}%',
+                                style: GoogleFonts.outfit(
+                                  color: Colors.white,
+                                  fontSize: 48,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
                     ),
                   ],
                 ),

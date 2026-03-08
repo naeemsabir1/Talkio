@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'section_card.dart';
 import '../../../core/models/memo_model.dart';
 import '../../../core/widgets/dark_grammar_card.dart';
@@ -19,7 +20,7 @@ class GrammarCard extends StatelessWidget {
     if (filteredPoints.isEmpty) return const SizedBox.shrink();
 
     return SectionCard(
-      title: 'Grammar',
+      title: 'memo_sections.grammar'.tr(),
       icon: Icons.lightbulb_rounded,
       accentColor: const Color(0xFFEAB308), // Yellow
       child: Column(

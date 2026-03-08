@@ -20,7 +20,7 @@ class AiContentService {
   /// 4. Creates summary audio (TTS)
   ///
   /// Returns a fully populated [Memo] object.
-  Future<Memo> processUrl(String url, String languageName, String targetLanguage) async {
+  Future<Memo> processUrl(String url, String languageName, String targetLanguage, String appUiLanguage) async {
     final uri = Uri.parse('$_backendBaseUrl/api/process');
 
     final response = await http
@@ -31,12 +31,13 @@ class AiContentService {
             'url': url,
             'language': languageName,
             'target_language': targetLanguage,
+            'app_ui_language': appUiLanguage,
           }),
         )
         .timeout(
-          const Duration(minutes: 3), // Backend processing can take time
+          const Duration(minutes: 8), // Long videos (5-6 min) need up to 8 min for full pipeline
           onTimeout: () => throw AiServiceException(
-            'Processing timed out. The video may be too long. Try a shorter clip.',
+            'Processing timed out. Longer videos may take up to 8 minutes. Please try again or use a shorter clip.',
           ),
         );
 
@@ -90,12 +91,13 @@ class AiContentService {
       return VocabularyItem(
         word: map['word'] as String? ?? '',
         pronunciation: map['pronunciation'] as String? ?? '',
-        definition: map['definition'] as String? ?? '',
+        meaning: map['meaning'] as String? ?? map['definition'] as String? ?? '',
+        explanation: map['explanation'] as String? ?? '',
         example: map['example'] as String?,
       );
     }).toList();
 
-    // Parse grammar points
+    // Parse grammar points (examples are now {sentence, translation} objects)
     final grammarList = (data['grammar'] as List<dynamic>?) ?? [];
     final grammar = grammarList.map((g) {
       final map = g as Map<String, dynamic>;
@@ -104,11 +106,43 @@ class AiContentService {
         title: map['title'] as String? ?? '',
         explanation: map['explanation'] as String? ?? '',
         examples: (map['examples'] as List<dynamic>?)
-                ?.map((e) => e.toString())
+                ?.map((e) => GrammarExample.fromJson(e))
                 .toList() ??
             [],
       );
     }).toList();
+
+    // Parse pronouns from dedicated array and convert to GrammarPoint(type: 'Pronoun')
+    // The backend returns pronouns separately with {category, word, explanation, examples[{sentence, translation}]}
+    // We merge them into the grammar list so PronounsCard can find them via type == 'Pronoun'
+    final pronounsList = (data['pronouns'] as List<dynamic>?) ?? [];
+    for (final p in pronounsList) {
+      final map = p as Map<String, dynamic>;
+      final word = map['word'] as String? ?? '';
+      final category = map['category'] as String? ?? '';
+      final explanation = map['explanation'] as String? ?? '';
+      final examplesRaw = (map['examples'] as List<dynamic>?) ?? [];
+      final exampleObjects = examplesRaw.map((ex) {
+        if (ex is Map<String, dynamic>) {
+          return GrammarExample(
+            sentence: ex['sentence'] as String? ?? '',
+            translation: ex['translation'] as String? ?? '',
+          );
+        }
+        return GrammarExample(sentence: ex.toString(), translation: '');
+      }).toList();
+
+      if (word.isNotEmpty || category.isNotEmpty) {
+        grammar.add(GrammarPoint(
+          type: 'Pronoun',
+          title: word.isNotEmpty ? word : category,
+          explanation: category.isNotEmpty && word.isNotEmpty
+              ? '[$category] $explanation'
+              : explanation,
+          examples: exampleObjects,
+        ));
+      }
+    }
 
     // Parse conjugations
     final conjList = (data['conjugations'] as List<dynamic>?) ?? [];
@@ -117,6 +151,8 @@ class AiContentService {
       return ConjugationItem(
         form: map['form'] as String? ?? '',
         example: map['example'] as String? ?? '',
+        translation: map['translation'] as String? ?? '',
+        explanation: map['explanation'] as String? ?? '',
       );
     }).toList();
 
@@ -128,6 +164,19 @@ class AiContentService {
         word: map['word'] as String? ?? '',
         start: (map['start'] as num?)?.toDouble() ?? 0.0,
         end: (map['end'] as num?)?.toDouble() ?? 0.0,
+      );
+    }).toList();
+
+    // Parse Quiz List
+    final quizList = (data['quiz'] as List<dynamic>?) ?? [];
+    final quizItems = quizList.map((q) {
+      final map = q as Map<String, dynamic>;
+      return QuizItem(
+        question: map['question'] as String? ?? '',
+        hint: map['hint'] as String? ?? '',
+        explanation: map['explanation'] as String? ?? '',
+        correctAnswer: map['correct_answer'] as String? ?? '',
+        wrongAnswers: (map['wrong_answers'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
       );
     }).toList();
 
@@ -152,8 +201,30 @@ class AiContentService {
       vocabulary: vocabulary,
       grammar: grammar,
       conjugations: conjugations,
+      quiz: quizItems,
       words: words,
     );
+  }
+  /// 5. Format the raw transcription strictly adding punctuation/capitalization
+  Future<String> formatTranscriptionWithAI(String rawString) async {
+    final uri = Uri.parse('$_backendBaseUrl/api/copyedit');
+    try {
+      final response = await http
+          .post(
+            uri,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({'text': rawString}),
+          )
+          .timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        return data['formatted_text'] as String? ?? rawString;
+      }
+      return rawString;
+    } catch (_) {
+      return rawString; // Silently fallback on timeout or error
+    }
   }
 }
 

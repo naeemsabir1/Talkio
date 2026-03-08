@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'section_card.dart';
 import '../../../core/models/memo_model.dart';
 
@@ -15,7 +16,7 @@ class VocabularyCard extends StatelessWidget {
     if (vocabulary.isEmpty) return const SizedBox.shrink();
 
     return SectionCard(
-      title: 'Vocabulary',
+      title: 'memo_sections.vocabulary'.tr(),
       icon: Icons.menu_book_rounded,
       accentColor: const Color(0xFF10B981), // Emerald for vocab
       child: Container(
@@ -61,11 +62,11 @@ class VocabularyCard extends StatelessWidget {
                           fontSize: 16,
                           height: 1.5,
                         ),
-                        columns: const [
-                          DataColumn(label: Text('Word')),
-                          DataColumn(label: Text('Pronunciation')),
-                          DataColumn(label: Text('Significance')),
-                          DataColumn(label: Text('Explanation')),
+                        columns: [
+                          DataColumn(label: Text('data_table.word'.tr())),
+                          DataColumn(label: Text('data_table.pronunciation'.tr())),
+                          DataColumn(label: Text('data_table.meaning'.tr())),
+                          DataColumn(label: Text('data_table.explanation'.tr())),
                         ],
                         rows: vocabulary.map((item) {
                           return DataRow(
@@ -97,14 +98,14 @@ class VocabularyCard extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              // Significance (Example)
+                              // Meaning
                               DataCell(
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                                   child: SizedBox(
                                     width: 250, // Constrain width for horizontal scrolling relevance
                                     child: Text(
-                                      item.example ?? '-',
+                                      item.meaning,
                                       style: TextStyle(
                                         color: Colors.white.withOpacity(0.8),
                                         fontSize: 16,
@@ -113,14 +114,14 @@ class VocabularyCard extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              // Explanation (Definition)
+                              // Explanation
                               DataCell(
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                                   child: SizedBox(
                                     width: 300, // Constrain width to encourage horizontal scrolling if long
                                     child: Text(
-                                      item.definition,
+                                      item.explanation,
                                       style: TextStyle(
                                         color: Colors.white.withOpacity(0.9),
                                         fontSize: 16,

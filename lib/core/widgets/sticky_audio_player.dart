@@ -72,7 +72,11 @@ class _StickyAudioPlayerState extends State<StickyAudioPlayer> {
     }
     try {
       debugPrint('🔊 StickyAudioPlayer: Loading audio from ${widget.audioUrl}');
-      await _audioPlayer.setUrl(widget.audioUrl);
+      if (widget.audioUrl.startsWith('http')) {
+        await _audioPlayer.setUrl(widget.audioUrl);
+      } else {
+        await _audioPlayer.setFilePath(widget.audioUrl);
+      }
       debugPrint('✅ StickyAudioPlayer: Audio loaded successfully');
     } catch (e) {
       debugPrint('❌ StickyAudioPlayer: Error loading audio: $e');

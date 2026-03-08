@@ -13,8 +13,9 @@ class Memo {
   final List<GrammarPoint> grammar;
   final List<ConjugationItem> conjugations;
   final List<WordTimestamp> words;
+  final List<QuizItem> quiz;
 
-  const Memo({
+  Memo({
     required this.id,
     required this.title,
     required this.sourceUrl,
@@ -29,6 +30,7 @@ class Memo {
     required this.grammar,
     required this.conjugations,
     required this.words,
+    required this.quiz,
   });
 
   Map<String, dynamic> toJson() {
@@ -47,6 +49,7 @@ class Memo {
       'grammar': grammar.map((x) => x.toJson()).toList(),
       'conjugations': conjugations.map((x) => x.toJson()).toList(),
       'words': words.map((x) => x.toJson()).toList(),
+      'quiz': quiz.map((x) => x.toJson()).toList(),
     };
   }
 
@@ -88,6 +91,8 @@ class Memo {
           map['conjugations']?.map((x) => ConjugationItem.fromJson(x)) ?? []),
       words: List<WordTimestamp>.from(
           map['words']?.map((x) => WordTimestamp.fromJson(x)) ?? []),
+      quiz: List<QuizItem>.from(
+          map['quiz']?.map((x) => QuizItem.fromJson(x)) ?? []),
     );
   }
 }
@@ -147,20 +152,23 @@ class TranscriptSegment {
 class VocabularyItem {
   final String word;
   final String pronunciation;
-  final String definition;
+  final String meaning;
+  final String explanation;
   final String? example;
 
   const VocabularyItem({
     required this.word,
     required this.pronunciation,
-    required this.definition,
+    required this.meaning,
+    required this.explanation,
     this.example,
   });
 
   Map<String, dynamic> toJson() => {
         'word': word,
         'pronunciation': pronunciation,
-        'definition': definition,
+        'meaning': meaning,
+        'explanation': explanation,
         'example': example,
       };
 
@@ -168,9 +176,34 @@ class VocabularyItem {
     return VocabularyItem(
       word: map['word'] ?? '',
       pronunciation: map['pronunciation'] ?? '',
-      definition: map['definition'] ?? '',
+      meaning: map['meaning'] ?? map['definition'] ?? '', // Fallback for old data
+      explanation: map['explanation'] ?? '',
       example: map['example'],
     );
+  }
+}
+
+class GrammarExample {
+  final String sentence;
+  final String translation;
+
+  const GrammarExample({required this.sentence, required this.translation});
+
+  Map<String, dynamic> toJson() => {
+        'sentence': sentence,
+        'translation': translation,
+      };
+
+  /// Handles BOTH new {sentence, translation} objects AND old plain strings
+  factory GrammarExample.fromJson(dynamic json) {
+    if (json is Map<String, dynamic>) {
+      return GrammarExample(
+        sentence: json['sentence'] as String? ?? '',
+        translation: json['translation'] as String? ?? '',
+      );
+    }
+    // Backward compatibility: plain string → sentence only, no translation
+    return GrammarExample(sentence: json.toString(), translation: '');
   }
 }
 
@@ -178,7 +211,7 @@ class GrammarPoint {
   final String type;
   final String title;
   final String explanation;
-  final List<String> examples;
+  final List<GrammarExample> examples;
 
   const GrammarPoint({
     required this.type,
@@ -191,7 +224,7 @@ class GrammarPoint {
         'type': type,
         'title': title,
         'explanation': explanation,
-        'examples': examples,
+        'examples': examples.map((e) => e.toJson()).toList(),
       };
 
   factory GrammarPoint.fromJson(Map<String, dynamic> map) {
@@ -199,7 +232,10 @@ class GrammarPoint {
       type: map['type'] ?? '',
       title: map['title'] ?? '',
       explanation: map['explanation'] ?? '',
-      examples: List<String>.from(map['examples'] ?? []),
+      examples: (map['examples'] as List<dynamic>?)
+              ?.map((e) => GrammarExample.fromJson(e))
+              .toList() ??
+          [],
     );
   }
 }
@@ -207,21 +243,66 @@ class GrammarPoint {
 class ConjugationItem {
   final String form;
   final String example;
+  final String translation;
+  final String explanation;
 
   const ConjugationItem({
     required this.form,
     required this.example,
+    required this.translation,
+    required this.explanation,
   });
 
   Map<String, dynamic> toJson() => {
         'form': form,
         'example': example,
+        'translation': translation,
+        'explanation': explanation,
       };
 
   factory ConjugationItem.fromJson(Map<String, dynamic> map) {
     return ConjugationItem(
       form: map['form'] ?? '',
       example: map['example'] ?? '',
+      translation: map['translation'] ?? '',
+      explanation: map['explanation'] ?? '',
     );
   }
 }
+
+class QuizItem {
+  final String question;
+  final String hint;
+  final String explanation;
+  final String correctAnswer;
+  final List<String> wrongAnswers;
+
+  QuizItem({
+    required this.question,
+    required this.hint,
+    required this.explanation,
+    required this.correctAnswer,
+    required this.wrongAnswers,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'question': question,
+      'hint': hint,
+      'explanation': explanation,
+      'correct_answer': correctAnswer,
+      'wrong_answers': wrongAnswers,
+    };
+  }
+
+  factory QuizItem.fromJson(Map<String, dynamic> map) {
+    return QuizItem(
+      question: map['question'] ?? '',
+      hint: map['hint'] ?? '',
+      explanation: map['explanation'] ?? '',
+      correctAnswer: map['correct_answer'] ?? '',
+      wrongAnswers: List<String>.from(map['wrong_answers'] ?? []),
+    );
+  }
+}
+

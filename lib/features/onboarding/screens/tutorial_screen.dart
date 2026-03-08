@@ -18,8 +18,8 @@ class _TutorialScreenState extends ConsumerState<TutorialScreen> {
   int _currentPage = 0;
 
   void _finishOnboarding() {
-    ref.read(storageServiceProvider).setOnboardingComplete();
-    context.go('/home'); // Use go to clear stack
+    // Navigate to the onboarding paywall instead of directly home
+    context.go('/onboarding_paywall'); 
   }
 
   @override

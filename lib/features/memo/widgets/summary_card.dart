@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'section_card.dart';
 
 class SummaryCard extends StatelessWidget {
@@ -12,7 +13,7 @@ class SummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      title: 'Summary', // Localize later if needed
+      title: 'memo_sections.summary'.tr(),
       icon: Icons.article_rounded,
       accentColor: const Color(0xFFF59E0B), // Amber for summary
       child: Text(

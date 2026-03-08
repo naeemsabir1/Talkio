@@ -1,0 +1,97 @@
+{
+  "home": {
+    "greeting": "Hi, {}",
+    "subtitle": "Ready for your next language lesson?",
+    "memo_button": "Memo",
+    "search_hint": "Find memo...",
+    "filter_all": "All",
+    "empty_title": "No memos yet...",
+    "empty_subtitle": "Start your learning journey by importing a video link above.",
+    "action_see_memo": "See Memo",
+    "action_cards": "Cards",
+    "action_quiz": "Quiz",
+    "nav_home": "Home",
+    "nav_profile": "Profile"
+  },
+  "memo_detail": {
+    "save_success": "✨ Memo created successfully!",
+    "saved_library": "Memo saved to library!",
+    "quit": "Quit",
+    "save": "Save"
+  },
+  "memo_sections": {
+    "summary": "Summary",
+    "transcription": "Transcription",
+    "translation": "Translation",
+    "vocabulary": "Vocabulary",
+    "pronouns": "Pronouns",
+    "grammar": "Grammar",
+    "conjugation": "Conjugation"
+  },
+  "profile": {
+    "settings_preferences": "Settings & Preferences",
+    "account_settings": "Account Settings",
+    "account_settings_subtitle": "Manage billing and plan",
+    "language_target": "Language Target",
+    "language_target_subtitle": "Change what you learn",
+    "help_center": "Help Center",
+    "help_center_subtitle": "FAQ and support",
+    "profile_section": "PROFILE",
+    "name": "Name",
+    "delete_account": "Delete Account",
+    "delete_account_confirm_title": "Delete Account?",
+    "delete_account_confirm_msg": "This will permanently erase all your memos, settings, and app data. This action cannot be undone.",
+    "delete_confirm": "Delete Everything",
+    "cancel": "Cancel",
+    "log_out": "Log Out",
+    "log_out_confirm_title": "Log Out?",
+    "log_out_confirm_msg": "This will clear all your app data and log you out.",
+    "log_out_confirm": "Log Out",
+    "claim_rewards": "Claim Free Membership rewards"
+  },
+  "help_center": {
+    "title": "Help Center",
+    "faq_header": "FREQUENTLY ASKED",
+    "faq_q1": "How do I import a video?",
+    "faq_a1": "Simply copy the link of any Instagram Reel or TikTok video. Then open Talkio, tap the 'Memo' button on the home screen, paste the URL, and let Talkio automatically extract the audio and transcript for you to learn from.",
+    "faq_q2": "How to change translation language?",
+    "faq_a2": "When you import a new video, you will be prompted to select a Target Language before processing. You can also update your global default Target Language in the Profile > Language Target settings.",
+    "faq_q3": "Why did a video fail to process?",
+    "faq_a3": "This usually happens if the link is broken, the video is private, or if the creator has disabled sharing for that specific video. Try importing a different public video link."
+  },
+  "data_table": {
+    "word": "Word",
+    "pronunciation": "Pronunciation",
+    "meaning": "Meaning",
+    "explanation": "Explanation",
+    "form": "Form",
+    "example": "Example",
+    "translation": "Translation"
+  },
+  "paywall": {
+    "headline": "Talkio Pro students are 5.2x more likely to learn faster and become fluent!",
+    "features": {
+      "full_access": "Full Access!",
+      "full_access_desc": "Premium with all features unlocked",
+      "smart_video": "Smart Video Learning",
+      "smart_video_desc": "Learn from Reels, TikTok and more!",
+      "personalized": "Personalized Progress",
+      "personalized_desc": "Adapts to your level and pace",
+      "unlimited_vocab": "Unlimited Vocabulary",
+      "unlimited_vocab_desc": "Access thousands of useful words"
+    },
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "7_days_free": "7 Days Free",
+    "cta_trial": "Start my 7-day free trial",
+    "cta_continue": "Continue",
+    "restore_purchases": "Restore Purchases",
+    "terms_of_service": "Terms of Service",
+    "privacy_policy": "Privacy Policy",
+    "cancel_anytime": "Cancel anytime in App Store settings.",
+    "loading": "Loading...",
+    "error_purchase": "Purchase failed. Please try again.",
+    "error_restore": "Restore failed. Please try again or ensure you have a previous purchase.",
+    "error_loading_products": "Could not load pricing. Please check your internet connection."
+  }
+}

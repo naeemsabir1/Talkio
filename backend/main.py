@@ -65,7 +65,16 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 class ProcessRequest(BaseModel):
     url: str
     language: str = "English"  # Source language (detected or specified)
-    target_language: str = "English"  # Output language for translations & explanations
+    target_language: str = "English"  # Target learning language
+    app_ui_language: str = "en"  # The overall app UI language (e.g. "es", "en")
+
+
+class CopyeditRequest(BaseModel):
+    text: str
+
+
+class CopyeditResponse(BaseModel):
+    formatted_text: str
 
 
 class WordTimestamp(BaseModel):
@@ -83,20 +92,49 @@ class TranscriptSegment(BaseModel):
 class VocabularyItem(BaseModel):
     word: str
     pronunciation: str
-    definition: str
+    meaning: str
+    explanation: str
     example: str | None = None
+
+
+class GrammarExample(BaseModel):
+    sentence: str
+    translation: str
 
 
 class GrammarPoint(BaseModel):
     type: str
     title: str
     explanation: str
-    examples: list[str]
+    examples: list[GrammarExample]
+
+
+class PronounExample(BaseModel):
+    sentence: str
+    translation: str
+
+
+class PronounItem(BaseModel):
+    category: str
+    word: str
+    explanation: str
+    examples: list[PronounExample]
+
 
 
 class ConjugationItem(BaseModel):
     form: str
     example: str
+    translation: str
+    explanation: str
+
+
+class QuizItem(BaseModel):
+    question: str
+    hint: str
+    explanation: str
+    correct_answer: str
+    wrong_answers: list[str]
 
 
 class ProcessResponse(BaseModel):
@@ -112,6 +150,8 @@ class ProcessResponse(BaseModel):
     vocabulary: list[VocabularyItem]
     grammar: list[GrammarPoint]
     conjugations: list[ConjugationItem]
+    quiz: list[QuizItem]
+    pronouns: list[PronounItem]
     words: list[WordTimestamp]  # For karaoke effect
 
 
@@ -156,6 +196,36 @@ async def diagnostics():
     }
 
 
+# ─── Copyeditor Endpoint ──────────────────────────────────────
+
+@app.post("/api/copyedit", response_model=CopyeditResponse)
+async def copyedit_text(request: CopyeditRequest):
+    """
+    Format raw transcription with AI to add punctuation and capitalization.
+    DOES NOT change original words.
+    """
+    from openai import OpenAI
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    
+    system_prompt = "You are an expert English copyeditor. Your only job is to take the following raw speech-to-text transcript and add proper punctuation, capitalization, and grammatical formatting. DO NOT change the original words, do not summarize, and do not add conversational filler. Output ONLY the perfectly formatted text."
+    
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": request.text},
+            ],
+            temperature=0.3,
+            max_tokens=4000,
+        )
+        formatted = response.choices[0].message.content.strip()
+        return CopyeditResponse(formatted_text=formatted)
+    except Exception as e:
+        print(f"❌ Copyedit error: {e}")
+        return CopyeditResponse(formatted_text=request.text)
+
+
 # ─── Main Processing Endpoint ─────────────────────────────────
 
 @app.post("/api/process", response_model=ProcessResponse)
@@ -167,8 +237,11 @@ async def process_url(request: ProcessRequest, raw_request: Request):
     """
     request_id = None
 
+    pipeline_start = time.time()
+
     try:
         # ── Step 1: Extract Audio ──────────────────────────────
+        step_start = time.time()
         print(f"🎬 Step 1/4: Extracting audio from {request.url}")
         extraction = extract_audio(request.url)
         request_id = extraction["request_id"]
@@ -176,55 +249,78 @@ async def process_url(request: ProcessRequest, raw_request: Request):
         thumbnail_url = extraction["thumbnail_url"]
         video_title = extraction["title"]
         platform = extraction["platform"]
-        print(f"   ✅ Audio extracted: {audio_path}")
+        print(f"   ✅ Audio extracted: {audio_path} ({time.time() - step_start:.1f}s)")
 
         # ── Step 2: Transcribe with Whisper ────────────────────
+        step_start = time.time()
         print(f"🎤 Step 2/4: Transcribing audio ({request.language})")
         transcription = transcribe(audio_path, request.language)
         transcript_text = transcription["text"]
         words = transcription["words"]
         segments = transcription["segments"]
-        print(f"   ✅ Transcribed: {len(words)} words, {len(segments)} segments")
+        print(f"   ✅ Transcribed: {len(words)} words, {len(segments)} segments ({time.time() - step_start:.1f}s)")
 
         if not transcript_text.strip():
             raise ValueError("No speech detected in the audio. The video may not contain spoken content.")
 
         # ── Step 3: Analyze with GPT-4o ────────────────────────
+        step_start = time.time()
         print(f"🧠 Step 3/4: Analyzing content with GPT-4o")
-        analysis = analyze(transcript_text, request.language, request.target_language, segments)
-        print(f"   ✅ Analysis complete: {len(analysis['vocabulary'])} vocab, {len(analysis['grammar'])} grammar points")
+        analysis = analyze(transcript_text, request.language, request.target_language, request.app_ui_language, segments)
+        print(f"   ✅ Analysis complete: {len(analysis['vocabulary'])} vocab, {len(analysis['grammar'])} grammar points ({time.time() - step_start:.1f}s)")
 
         # ── Step 4: Generate TTS Audio ─────────────────────────────
-        # Build TTS text from translations (so the voice speaks the translation)
+        # For LONG videos: use the lesson summary for TTS voice (concise, 1 chunk, fast)
+        # For SHORT videos: use the full translation (more detail, still fits 1-2 chunks)
+        step_start = time.time()
         translated = analysis.get("translated_segments", [])
         if translated:
-            tts_text = " ".join(t.get("translation", t.get("original", "")) for t in translated)
+            full_translation = " ".join(t.get("translation", t.get("original", "")) for t in translated)
         else:
-            # Same-language mode: use summary as fallback
+            full_translation = ""
+
+        # Smart TTS text selection: summary for long content, translation for short
+        if len(full_translation) > 3000:
             tts_text = analysis["summary"]
-        
-        print(f"🔊 Step 4/4: Generating TTS audio for translation")
+            print(f"🔊 Step 4/4: TTS using SUMMARY ({len(tts_text)} chars) — full translation too long ({len(full_translation)} chars)")
+        elif full_translation:
+            tts_text = full_translation
+            print(f"🔊 Step 4/4: TTS using full translation ({len(tts_text)} chars)")
+        else:
+            tts_text = analysis["summary"]
+            print(f"🔊 Step 4/4: TTS using summary as fallback ({len(tts_text)} chars)")
+
         tts_audio_path = generate_speech(tts_text)
         # Build full audio URL so mobile devices can reach it
-        base_url = str(raw_request.base_url).rstrip('/')
-        tts_full_url = f"{base_url}{tts_audio_path}"
-        print(f"   ✅ TTS audio: {tts_full_url}")
+        # Guard: if TTS failed (returned ""), keep audioUrl empty instead of
+        # building a broken URL like "https://host" with no audio path.
+        if tts_audio_path:
+            base_url = str(raw_request.base_url).rstrip('/')
+            tts_full_url = f"{base_url}{tts_audio_path}"
+        else:
+            tts_full_url = ""
+            print("   ⚠️ TTS generation returned empty — audioUrl will be empty")
+        print(f"   ✅ TTS audio: {tts_full_url or '(none)'} ({time.time() - step_start:.1f}s)")
 
         # ── Build Response ─────────────────────────────────────
         # Use GPT-generated title, fallback to video title
         lesson_title = analysis.get("title", video_title) or video_title
 
-        # Build transcript segments from GPT translations + Whisper timestamps
+        # Build transcript segments from GPT translations + Whisper timestamps using ID mapping
         transcript_segments = []
         translated = analysis.get("translated_segments", [])
 
         if translated:
+            # Map by ID
             for ts in translated:
-                transcript_segments.append(TranscriptSegment(
-                    original=ts.get("original", ""),
-                    translation=ts.get("translation", ts.get("original", "")),
-                    timestamp=ts.get("timestamp", 0.0),
-                ))
+                seg_id = ts.get("id")
+                if seg_id is not None and seg_id < len(segments):
+                    orig_seg = segments[seg_id]
+                    transcript_segments.append(TranscriptSegment(
+                        original=orig_seg["text"],
+                        translation=ts.get("translation", orig_seg["text"]),
+                        timestamp=orig_seg["start"],
+                    ))
         else:
             # Fallback: use Whisper segments directly
             for seg in segments:
@@ -239,31 +335,77 @@ async def process_url(request: ProcessRequest, raw_request: Request):
             VocabularyItem(
                 word=v.get("word", ""),
                 pronunciation=v.get("pronunciation", ""),
-                definition=v.get("definition", ""),
+                meaning=v.get("meaning", v.get("definition", "")),
+                explanation=v.get("explanation", ""),
                 example=v.get("example"),
             )
             for v in analysis.get("vocabulary", [])
         ]
 
         # Build grammar list
-        grammar = [
-            GrammarPoint(
+        grammar = []
+        for g in analysis.get("grammar", []):
+            examples = []
+            for ex in g.get("examples", []):
+                if isinstance(ex, dict):
+                    examples.append(GrammarExample(
+                        sentence=ex.get("sentence", ""),
+                        translation=ex.get("translation", "")
+                    ))
+                elif isinstance(ex, str):
+                    examples.append(GrammarExample(
+                        sentence=ex,
+                        translation=""
+                    ))
+            
+            grammar.append(GrammarPoint(
                 type=g.get("type", "General"),
                 title=g.get("title", ""),
                 explanation=g.get("explanation", ""),
-                examples=g.get("examples", []),
-            )
-            for g in analysis.get("grammar", [])
-        ]
+                examples=examples,
+            ))
+
+        # Build pronouns list
+        pronouns = []
+        for p in analysis.get("pronouns", []):
+            examples = []
+            for ex in p.get("examples", []):
+                examples.append(PronounExample(
+                    sentence=ex.get("sentence", ""),
+                    translation=ex.get("translation", "")
+                ))
+            pronouns.append(PronounItem(
+                category=p.get("category", ""),
+                word=p.get("word", ""),
+                explanation=p.get("explanation", ""),
+                examples=examples
+            ))
 
         # Build conjugation list
         conjugations = [
             ConjugationItem(
                 form=c.get("form", ""),
                 example=c.get("example", ""),
+                translation=c.get("translation", ""),
+                explanation=c.get("explanation", ""),
             )
             for c in analysis.get("conjugations", [])
         ]
+
+        # Build generated quiz items
+        quiz_items = []
+        for q in analysis.get("quiz", []):
+            try:
+                quiz_items.append(QuizItem(
+                    question=q.get("question", ""),
+                    hint=q.get("hint", ""),
+                    explanation=q.get("explanation", ""),
+                    correct_answer=q.get("correct_answer", ""),
+                    wrong_answers=q.get("wrong_answers", []),
+                ))
+            except Exception:
+                pass
+
 
         # Build word timestamps for karaoke
         word_timestamps = [
@@ -287,10 +429,13 @@ async def process_url(request: ProcessRequest, raw_request: Request):
             vocabulary=vocabulary,
             grammar=grammar,
             conjugations=conjugations,
+            quiz=quiz_items,
+            pronouns=pronouns,
             words=word_timestamps,
         )
 
-        print(f"🎉 Processing complete! Memo ID: {memo_id}")
+        elapsed = time.time() - pipeline_start
+        print(f"🎉 Processing complete! Memo ID: {memo_id} — Total pipeline: {elapsed:.1f}s ({elapsed/60:.1f} min)")
         return response
 
     except ValueError as e:

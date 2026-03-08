@@ -8,8 +8,9 @@ import '../../features/onboarding/screens/quiz_screen.dart';
 import '../../features/onboarding/screens/pitch_screen.dart';
 import '../../features/onboarding/screens/tutorial_screen.dart';
 import '../../features/home/screens/home_screen.dart';
-import '../../features/home/screens/processing_screen.dart';
+import '../../features/home/screens/share_processing_screen.dart';
 import '../../features/memo/screens/memo_detail_screen.dart';
+import '../../features/premium/screens/onboarding_paywall_screen.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -34,9 +35,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/processing',
         builder: (context, state) {
           final params = state.extra as Map<String, String>?;
-          return ProcessingScreen(
+          return ShareProcessingScreen(
             sharedUrl: params?['url'] ?? '',
-            selectedLanguage: params?['language'] ?? 'English',
+            initialLanguage: params?['language'],
           );
         },
       ),
@@ -62,6 +63,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/tutorial',
         builder: (context, state) => const TutorialScreen(),
+      ),
+      GoRoute(
+        path: '/onboarding_paywall',
+        builder: (context, state) => const OnboardingPaywallScreen(),
       ),
     ],
   );

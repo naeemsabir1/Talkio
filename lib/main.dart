@@ -9,19 +9,34 @@ import 'core/router/app_router.dart';
 import 'core/services/storage_service.dart';
 import 'core/services/memo_storage_service.dart';
 import 'features/home/screens/share_processing_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'core/services/revenuecat_service.dart';
+import 'features/premium/screens/paywall_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   
   final prefs = await SharedPreferences.getInstance();
   
   runApp(
-    ProviderScope(
-      overrides: [
-        storageServiceProvider.overrideWithValue(StorageService(prefs)),
-        memoStorageServiceProvider.overrideWithValue(MemoStorageService(prefs)),
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('en'),
+        Locale('fr'),
+        Locale('de'),
+        Locale('es'),
+        Locale('it'),
       ],
-      child: const TalkioApp(),
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: ProviderScope(
+        overrides: [
+          storageServiceProvider.overrideWithValue(StorageService(prefs)),
+          memoStorageServiceProvider.overrideWithValue(MemoStorageService(prefs)),
+        ],
+        child: const TalkioApp(),
+      ),
     ),
   );
 }
@@ -42,6 +57,12 @@ class _TalkioAppState extends ConsumerState<TalkioApp> {
   void initState() {
     super.initState();
     _initializeShareIntentListeners();
+    _initializeRevenueCat();
+  }
+
+  Future<void> _initializeRevenueCat() async {
+    final revenueCat = ref.read(revenueCatServiceProvider);
+    await revenueCat.initialize();
   }
 
   void _initializeShareIntentListeners() {
@@ -121,7 +142,7 @@ class _TalkioAppState extends ConsumerState<TalkioApp> {
     }
     
     // Use rootNavigatorKey.currentState for reliable navigation
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       
       final navigatorState = rootNavigatorKey.currentState;
@@ -134,6 +155,24 @@ class _TalkioAppState extends ConsumerState<TalkioApp> {
       }
       
       _isNavigatingToShare = true;
+
+      // Premium hard-lock check
+      final revenueCat = ref.read(revenueCatServiceProvider);
+      if (!revenueCat.isPremiumUser()) {
+         debugPrint('🔒 User is not premium, routing to Paywall');
+         final purchased = await navigatorState.push(
+           MaterialPageRoute(
+             builder: (context) => const PaywallScreen(),
+             fullscreenDialog: true,
+           ),
+         );
+         _isNavigatingToShare = false;
+         if (purchased == true && mounted) {
+           _handleSharedUrl(url, 0); // Retry sharing logic now that user is premium
+         }
+         return; // Drop share attempt if they didn't purchase
+      }
+      
       debugPrint('✅ Navigating to ShareProcessingScreen with URL: $url');
       
       navigatorState.push(
@@ -161,6 +200,9 @@ class _TalkioAppState extends ConsumerState<TalkioApp> {
 
     return MaterialApp.router(
       title: 'Talkio',
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       theme: AppTheme.darkTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark, // Enforce God Mode

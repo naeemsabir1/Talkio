@@ -94,9 +94,9 @@ class DarkGrammarCard extends StatelessWidget {
           
           const SizedBox(height: 12),
           
-          // Example bullets
+          // Example bullets with translations
           ...grammarPoint.examples.map((example) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: 10),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -110,13 +110,33 @@ class DarkGrammarCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(
-                    example,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      height: 1.5,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Sentence in Target Language
+                      Text(
+                        example.sentence,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          height: 1.5,
+                        ),
+                      ),
+                      // Translation in App UI Language (if available)
+                      if (example.translation.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 3),
+                          child: Text(
+                            example.translation,
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.55),
+                              fontSize: 12.5,
+                              fontStyle: FontStyle.italic,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ],

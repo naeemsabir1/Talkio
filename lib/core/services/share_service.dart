@@ -5,8 +5,8 @@ final shareServiceProvider = Provider<ShareService>((ref) => ShareService());
 
 class ShareService {
   // Native Channels
-  static const _methodChannel = MethodChannel('com.auraly.share/data');
-  static const _eventChannel = EventChannel('com.auraly.share/events');
+  static const _methodChannel = MethodChannel('com.talkio.share/data');
+  static const _eventChannel = EventChannel('com.talkio.share/events');
 
   Future<String?> getInitialUrl() async {
     try {

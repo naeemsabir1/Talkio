@@ -1,7 +1,7 @@
 name: auraly_clone
 description: Talkio - Learn languages with AI.
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.0+5
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -21,8 +21,11 @@ dependencies:
   confetti: ^0.7.0
   flutter_animate: ^4.5.0
   receive_sharing_intent: ^1.5.0
-  http: ^1.2.0
+  http: ^1.6.0
   url_launcher: ^6.3.1
+  easy_localization: ^3.0.8
+  path_provider: ^2.1.5
+  purchases_flutter: ^9.13.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -34,6 +37,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/translations/
     - assets/images/
     - assets/images/onboarding_1.png
     - assets/images/onboarding_2.png

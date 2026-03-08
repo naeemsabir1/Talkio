@@ -63,3 +63,9 @@ backend/.venv/
 **/secrets/
 cookies.txt
 venv/
+
+# Temporary logs and outputs
+analyze*.txt
+build_out.txt
+devices.txt
+devices_output.json

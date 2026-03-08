@@ -90,12 +90,12 @@ def extract_audio(url: str) -> dict:
             if not audio_url:
                 raise ValueError("Could not extract audio link from TikTok response.")
                 
-            # Download the raw media file
-            audio_resp = httpx.get(audio_url, timeout=60.0)
-            audio_resp.raise_for_status()
-            
-            with open(audio_path, "wb") as f:
-                f.write(audio_resp.content)
+            # Download the raw media file (streaming for large files)
+            with httpx.stream("GET", audio_url, timeout=120.0) as audio_resp:
+                audio_resp.raise_for_status()
+                with open(audio_path, "wb") as f:
+                    for chunk in audio_resp.iter_bytes(chunk_size=65536):
+                        f.write(chunk)
             
             # Check file size (Whisper limit = 25MB)
             file_size_mb = os.path.getsize(audio_path) / (1024 * 1024)

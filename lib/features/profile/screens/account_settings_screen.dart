@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/services/storage_service.dart';
+import '../../../../core/providers/memo_provider.dart';
+import '../../../../core/widgets/language_switcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AccountSettingsScreen extends ConsumerWidget {
   const AccountSettingsScreen({super.key});
@@ -11,12 +15,16 @@ class AccountSettingsScreen extends ConsumerWidget {
     final userName = ref.watch(storageServiceProvider).userName;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F5F9), // Slate 100 for iOS grouped background
+      backgroundColor: const Color(0xFFF1F5F9),
       appBar: AppBar(
-        title: const Text("Account Settings", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('profile.account_settings'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
+        actions: const [
+          LanguageSwitcher(),
+          SizedBox(width: 8),
+        ],
         leading: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: IconButton(
@@ -42,11 +50,11 @@ class AccountSettingsScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSectionHeader("PROFILE"),
+              _buildSectionHeader('profile.profile_section'.tr()),
               _buildSettingsCard([
                 _buildListTile(
                   icon: Icons.person,
-                  title: "Name",
+                  title: 'profile.name'.tr(),
                   trailingText: userName,
                   onTap: () {},
                 ),
@@ -56,12 +64,42 @@ class AccountSettingsScreen extends ConsumerWidget {
 
               Center(
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: Text('profile.delete_account_confirm_title'.tr()),
+                        content: Text('profile.delete_account_confirm_msg'.tr()),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: Text('profile.cancel'.tr()),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              Navigator.pop(ctx);
+                              // Clear all memos
+                              ref.read(memosProvider.notifier).clearAll();
+                              // Clear shared preferences
+                              final prefs = await SharedPreferences.getInstance();
+                              await prefs.clear();
+                              // Navigate back
+                              if (context.mounted) {
+                                Navigator.pop(context);
+                              }
+                            },
+                            style: TextButton.styleFrom(foregroundColor: AppTheme.error),
+                            child: Text('profile.delete_confirm'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                   style: TextButton.styleFrom(
                     foregroundColor: AppTheme.error,
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   ),
-                  child: const Text("Delete Account", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  child: Text('profile.delete_account'.tr(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 ),
               ),
               const SizedBox(height: 40),
@@ -103,13 +141,6 @@ class AccountSettingsScreen extends ConsumerWidget {
       child: Column(
         children: children,
       ),
-    );
-  }
-
-  Widget _buildDivider() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 56),
-      child: Divider(height: 1, color: Colors.grey.shade100),
     );
   }
 

@@ -27,6 +27,11 @@ class MemosNotifier extends StateNotifier<List<Memo>> {
     await _storage.saveMemo(memo);
     _loadMemos();
   }
+
+  Future<void> clearAll() async {
+    await _storage.clearAll();
+    state = [];
+  }
 }
 
 // Provider for the list of memos

@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import AVFoundation
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -9,10 +10,22 @@ import Flutter
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    // ── Configure Audio Session for iOS ──
+    // This is CRITICAL for just_audio to work on iOS.
+    // Without this, audio won't play when the silent switch is on,
+    // and the native audio player may fail to initialize on release builds.
+    do {
+      let audioSession = AVAudioSession.sharedInstance()
+      try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+      try audioSession.setActive(true)
+    } catch {
+      print("⚠️ Failed to configure AVAudioSession: \(error.localizedDescription)")
+    }
+
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
     
     // Create MethodChannel for share intent
-    let shareChannel = FlutterMethodChannel(name: "com.auraly.share/data",
+    let shareChannel = FlutterMethodChannel(name: "com.talkio.share/data",
                                            binaryMessenger: controller.binaryMessenger)
     
     shareChannel.setMethodCallHandler({
@@ -26,7 +39,7 @@ import Flutter
     })
     
     // Create EventChannel for streaming share intents
-    let eventChannel = FlutterEventChannel(name: "com.auraly.share/events",
+    let eventChannel = FlutterEventChannel(name: "com.talkio.share/events",
                                           binaryMessenger: controller.binaryMessenger)
     eventChannel.setStreamHandler(ShareStreamHandler.shared)
     
@@ -38,7 +51,7 @@ import Flutter
   override func application(_ app: UIApplication,
                           open url: URL,
                           options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    if url.scheme == "auraly" {
+    if url.scheme == "talkio" {
       if url.host == "share",
          let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
          let queryItems = components.queryItems,

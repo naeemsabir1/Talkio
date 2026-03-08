@@ -334,27 +334,44 @@ class _LanguagePickerSheetState extends State<LanguagePickerSheet> {
                       )
                     ] : null,
                   ),
-                  child: TextField(
-                    controller: _searchController,
-                    style: const TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Inter'),
-                    cursorColor: const Color(0xFF8B5CF6),
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search, color: Color(0xFF94A3B8), size: 22),
-                      suffixIcon: _searchQuery.isNotEmpty 
-                          ? IconButton(
-                              icon: const Icon(Icons.cancel, color: Color(0xFF94A3B8), size: 18),
-                              onPressed: () {
-                                _searchController.clear();
-                                setState(() => _searchQuery = '');
-                              },
-                            )
-                          : null,
-                      hintText: 'Search 150+ languages...',
-                      hintStyle: const TextStyle(color: Color(0xFF64748B), fontSize: 16, fontFamily: 'Inter'),
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 18),
+                  child: Theme(
+                    data: ThemeData.dark().copyWith(
+                      textSelectionTheme: const TextSelectionThemeData(
+                        cursorColor: Color(0xFF8B5CF6),
+                        selectionColor: Color(0x558B5CF6),
+                        selectionHandleColor: Color(0xFF8B5CF6),
+                      ),
+                      inputDecorationTheme: const InputDecorationTheme(
+                        fillColor: Colors.transparent,
+                        filled: true,
+                      ),
                     ),
-                    onChanged: (v) => setState(() => _searchQuery = v),
+                    child: TextField(
+                      controller: _searchController,
+                      style: const TextStyle(color: Colors.white, fontSize: 16, fontFamily: 'Inter'),
+                      cursorColor: const Color(0xFF8B5CF6),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.search, color: Color(0xFF94A3B8), size: 22),
+                        suffixIcon: _searchQuery.isNotEmpty 
+                            ? IconButton(
+                                icon: const Icon(Icons.cancel, color: Color(0xFF94A3B8), size: 18),
+                                onPressed: () {
+                                  _searchController.clear();
+                                  setState(() => _searchQuery = '');
+                                },
+                              )
+                            : null,
+                        hintText: 'Search 150+ languages...',
+                        hintStyle: const TextStyle(color: Color(0xFF64748B), fontSize: 16, fontFamily: 'Inter'),
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 18),
+                      ),
+                      onChanged: (v) => setState(() => _searchQuery = v),
+                    ),
                   ),
                 ),
               ),

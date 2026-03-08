@@ -10,14 +10,19 @@ import '../../../core/providers/memo_provider.dart';
 import '../../../core/models/memo_model.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../core/widgets/processing_overlay.dart';
+import '../../../core/widgets/language_switcher.dart';
 import '../widgets/language_picker_sheet.dart';
-import '../../../core/widgets/processing_screen.dart';
+import '../../../features/home/screens/share_processing_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 import '../../memo/screens/memo_detail_screen.dart';
 import '../../flashcards/screens/flashcards_screen.dart';
 import '../../quiz/screens/quiz_screen_memo.dart';
 import '../../profile/screens/account_settings_screen.dart';
-import '../../profile/screens/notifications_screen.dart';
 import '../../profile/screens/help_center_screen.dart';
+import '../../../core/services/revenuecat_service.dart';
+import '../../premium/screens/paywall_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -54,8 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildNavItem(0, Icons.home_filled, "Home"),
-            _buildNavItem(1, Icons.person_rounded, "Profile"),
+            _buildNavItem(0, Icons.home_filled, 'home.nav_home'.tr()),
+            _buildNavItem(1, Icons.person_rounded, 'home.nav_profile'.tr()),
           ],
         ),
       ),
@@ -105,6 +110,18 @@ class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
   void _showAddMemoModal(BuildContext context, WidgetRef ref) async {
+    final revenueCat = ref.read(revenueCatServiceProvider);
+    if (!revenueCat.isPremiumUser()) {
+      final purchased = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const PaywallScreen(),
+          fullscreenDialog: true,
+        ),
+      );
+      if (purchased != true) return;
+    }
+
     final TextEditingController urlController = TextEditingController();
 
     final url = await showModalBottomSheet<String>(
@@ -223,10 +240,9 @@ class HomeView extends ConsumerWidget {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ProcessingScreen(
-          sourceUrl: url,
-          language: 'auto',        // Source: auto-detect by Whisper
-          targetLanguage: selectedLanguage, // Target: User selection
+        builder: (context) => ShareProcessingScreen(
+          sharedUrl: url,
+          initialLanguage: selectedLanguage, // Target: User selection
         ),
       ),
     );
@@ -284,7 +300,7 @@ class HomeView extends ConsumerWidget {
                     Row(
                       children: [
                         Flexible(
-                          child: Text("Hi, $userName", 
+                          child: Text('home.greeting'.tr(args: [userName]), 
                             style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, letterSpacing: -0.5),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -292,7 +308,7 @@ class HomeView extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Text("Ready for your next language lesson?", 
+                    Text('home.subtitle'.tr(), 
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondary),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -301,6 +317,8 @@ class HomeView extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: 16),
+              const LanguageSwitcher(),
+              const SizedBox(width: 8),
               // Add Memo Button
               InkWell(
                 onTap: () => _showAddMemoModal(context, ref),
@@ -315,7 +333,7 @@ class HomeView extends ConsumerWidget {
                     children: [
                       Icon(Icons.add, size: 20, color: AppTheme.primary),
                       const SizedBox(width: 4),
-                      Text("Memo", style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)),
+                      Text('home.memo_button'.tr(), style: TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
@@ -329,7 +347,7 @@ class HomeView extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: TextField(
             decoration: InputDecoration(
-              hintText: "Find memo...",
+              hintText: 'home.search_hint'.tr(),
               prefixIcon: const Icon(Icons.search, color: Colors.grey),
               filled: true,
               fillColor: AppTheme.surface,
@@ -359,7 +377,7 @@ class HomeView extends ConsumerWidget {
                   child: _buildFilterChip(
                     context,
                     ref,
-                    label: 'All',
+                    label: 'home.filter_all'.tr(),
                     count: filteredMemos.length,
                     isSelected: selectedLanguage == null,
                     onTap: () {
@@ -488,7 +506,7 @@ class HomeView extends ConsumerWidget {
           ),
           const SizedBox(height: 32),
           Text(
-            "No memos yet...", 
+            'home.empty_title'.tr(), 
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppTheme.textPrimary,
@@ -498,7 +516,7 @@ class HomeView extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Text(
-              "Start your learning journey by importing a video link above.", 
+              'home.empty_subtitle'.tr(), 
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppTheme.textSecondary,
                 height: 1.5,
@@ -528,32 +546,47 @@ class HomeView extends ConsumerWidget {
               topLeft: Radius.circular(16),
               bottomLeft: Radius.circular(16),
             ),
-            child: Image.network(
-              memo.thumbnailUrl,
-              width: 100,
-              height: 100,
-              fit: BoxFit.cover,
-              cacheWidth: 200, // Optimize for thumbnail size
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
+            child: memo.thumbnailUrl.startsWith('http') 
+              ? Image.network(
+                  memo.thumbnailUrl,
                   width: 100,
                   height: 100,
-                  color: Colors.grey.shade200,
-                  child: const Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                );
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
+                  fit: BoxFit.cover,
+                  cacheWidth: 200, // Optimize for thumbnail size
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      width: 100,
+                      height: 100,
+                      color: Colors.grey.shade200,
+                      child: const Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 100,
+                      height: 100,
+                      color: Colors.grey.shade200,
+                      child: Icon(Icons.broken_image, color: Colors.grey.shade400),
+                    );
+                  },
+                )
+              : Image.file(
+                  File(memo.thumbnailUrl),
                   width: 100,
                   height: 100,
-                  color: Colors.grey.shade200,
-                  child: Icon(Icons.broken_image, color: Colors.grey.shade400),
-                );
-              },
-            ),
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 100,
+                      height: 100,
+                      color: Colors.grey.shade200,
+                      child: Icon(Icons.broken_image, color: Colors.grey.shade400),
+                    );
+                  },
+                ),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -586,25 +619,25 @@ class HomeView extends ConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                SingleChildScrollView(
+                  SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      _buildActionChip(context, 'See Memo', Icons.article, () {
+                      _buildActionChip(context, 'home.action_see_memo'.tr(), Icons.article, () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => MemoDetailScreen(memo: memo)),
                         );
                       }),
                       const SizedBox(width: 8),
-                      _buildActionChip(context, 'Cards', Icons.style, () {
+                      _buildActionChip(context, 'home.action_cards'.tr(), Icons.style, () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => FlashcardsScreen(memo: memo)),
                         );
                       }),
                       const SizedBox(width: 8),
-                      _buildActionChip(context, 'Quiz', Icons.quiz, () {
+                      _buildActionChip(context, 'home.action_quiz'.tr(), Icons.quiz, () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => QuizScreenMemo(memo: memo)),
@@ -792,10 +825,10 @@ class ProfileView extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    const Flexible(
+                    Flexible(
                       child: Text(
-                        "Claim Free Membership rewards",
-                        style: TextStyle(
+                        'profile.claim_rewards'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -814,7 +847,7 @@ class ProfileView extends ConsumerWidget {
           
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Text("Settings & Preferences", style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+            child: Text('profile.settings_preferences'.tr(), style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
           ),
           const SizedBox(height: 16),
           
@@ -822,13 +855,10 @@ class ProfileView extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
-                _buildModernListTile(context, "Account Settings", "Manage billing and plan", Icons.manage_accounts, Colors.blue, onTap: () {
+                _buildModernListTile(context, 'profile.account_settings'.tr(), 'profile.account_settings_subtitle'.tr(), Icons.manage_accounts, Colors.blue, onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const AccountSettingsScreen()));
                 }),
-                _buildModernListTile(context, "Notifications", "App alerts and reminders", Icons.notifications_active, Colors.orange, onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsScreen()));
-                }),
-                _buildModernListTile(context, "Language Target", "Change what you learn", Icons.language, Colors.green, onTap: () {
+                _buildModernListTile(context, 'profile.language_target'.tr(), 'profile.language_target_subtitle'.tr(), Icons.language, Colors.green, onTap: () {
                   String currentSelected = ref.read(selectedLanguageProvider) ?? 'English';
                   showModalBottomSheet(
                     context: context,
@@ -842,7 +872,7 @@ class ProfileView extends ConsumerWidget {
                     ),
                   );
                 }),
-                _buildModernListTile(context, "Help Center", "FAQ and support", Icons.help_outline, Colors.purple, onTap: () {
+                _buildModernListTile(context, 'profile.help_center'.tr(), 'profile.help_center_subtitle'.tr(), Icons.help_outline, Colors.purple, onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const HelpCenterScreen()));
                 }),
               ],
@@ -855,9 +885,35 @@ class ProfileView extends ConsumerWidget {
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: Text('profile.log_out_confirm_title'.tr()),
+                      content: Text('profile.log_out_confirm_msg'.tr()),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx),
+                          child: Text('profile.cancel'.tr()),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            Navigator.pop(ctx);
+                            // Clear all memos
+                            ref.read(memosProvider.notifier).clearAll();
+                            // Clear shared preferences
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.clear();
+                          },
+                          style: TextButton.styleFrom(foregroundColor: AppTheme.error),
+                          child: Text('profile.log_out_confirm'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.logout, size: 20),
-                label: const Text("Log Out"),
+                label: Text('profile.log_out'.tr()),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.error.withOpacity(0.1),
                   foregroundColor: AppTheme.error,

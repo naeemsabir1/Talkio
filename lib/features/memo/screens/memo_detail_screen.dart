@@ -12,6 +12,11 @@ import '../widgets/vocabulary_card.dart';
 import '../widgets/grammar_card.dart';
 import '../widgets/pronouns_card.dart';
 import '../widgets/conjugation_card.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+import '../../../core/widgets/language_switcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MemoDetailScreen extends ConsumerStatefulWidget {
   final Memo memo;
@@ -63,10 +68,35 @@ class _MemoDetailScreenState extends ConsumerState<MemoDetailScreen> {
     }
     try {
       debugPrint('🔊 MemoDetail: Loading audio from ${widget.memo.audioUrl}');
-      await _audioPlayer.setUrl(widget.memo.audioUrl);
+      
+      // Check if it's a local file or a remote URL.
+      // iOS requires setFilePath() for local files — setUrl() without
+      // a file:// scheme prefix silently fails on iOS/AVFoundation.
+      final isLocal = !widget.memo.audioUrl.startsWith('http');
+      if (isLocal) {
+        debugPrint('🔊 MemoDetail: Loading from local file via setFilePath');
+        await _audioPlayer.setFilePath(widget.memo.audioUrl);
+      } else {
+        debugPrint('🔊 MemoDetail: Loading from remote URL');
+        await _audioPlayer.setUrl(widget.memo.audioUrl);
+      }
       debugPrint('✅ MemoDetail: Audio loaded — duration: ${_audioPlayer.duration}');
     } catch (e) {
-      debugPrint('❌ MemoDetail: Error loading audio: $e');
+      debugPrint('❌ MemoDetail: Error loading audio (attempt 1): $e');
+      // Retry once after a short delay — iOS sometimes needs a moment
+      // for the audio session to fully initialize
+      await Future.delayed(const Duration(milliseconds: 800));
+      try {
+        final isLocal = !widget.memo.audioUrl.startsWith('http');
+        if (isLocal) {
+          await _audioPlayer.setFilePath(widget.memo.audioUrl);
+        } else {
+          await _audioPlayer.setUrl(widget.memo.audioUrl);
+        }
+        debugPrint('✅ MemoDetail: Audio loaded on retry — duration: ${_audioPlayer.duration}');
+      } catch (retryError) {
+        debugPrint('❌ MemoDetail: Audio load failed after retry: $retryError');
+      }
     }
   }
 
@@ -193,16 +223,27 @@ class _MemoDetailScreenState extends ConsumerState<MemoDetailScreen> {
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
         onPressed: () => Navigator.pop(context),
       ),
+      actions: const [
+        LanguageSwitcher(),
+        SizedBox(width: 8),
+      ],
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           fit: StackFit.expand,
           children: [
-            Image.network(
-              widget.memo.thumbnailUrl,
-              fit: BoxFit.cover,
-              color: Colors.black.withOpacity(0.4),
-              colorBlendMode: BlendMode.darken,
-            ),
+            widget.memo.thumbnailUrl.startsWith('http')
+                ? Image.network(
+                    widget.memo.thumbnailUrl,
+                    fit: BoxFit.cover,
+                    color: Colors.black.withOpacity(0.4),
+                    colorBlendMode: BlendMode.darken,
+                  )
+                : Image.file(
+                    File(widget.memo.thumbnailUrl),
+                    fit: BoxFit.cover,
+                    color: Colors.black.withOpacity(0.4),
+                    colorBlendMode: BlendMode.darken,
+                  ),
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -390,7 +431,7 @@ class _MemoDetailScreenState extends ConsumerState<MemoDetailScreen> {
         TextButton.icon(
           onPressed: _handleQuit,
           icon: const Icon(Icons.close, color: Colors.white70),
-          label: const Text('Quit', style: TextStyle(color: Colors.white, fontSize: 16)),
+          label: Text('memo_detail.quit'.tr(), style: const TextStyle(color: Colors.white, fontSize: 16)),
           style: TextButton.styleFrom(
             backgroundColor: Colors.white.withOpacity(0.1),
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -417,7 +458,7 @@ class _MemoDetailScreenState extends ConsumerState<MemoDetailScreen> {
         TextButton.icon(
           onPressed: _handleSave,
           icon: const Icon(Icons.check, color: Colors.white),
-          label: const Text('Save', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+          label: Text('memo_detail.save'.tr(), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
           style: TextButton.styleFrom(
             backgroundColor: const Color(0xFF10B981), // Green
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -430,16 +471,38 @@ class _MemoDetailScreenState extends ConsumerState<MemoDetailScreen> {
     );
   }
 
-  void _handleSave() {
+  Future<void> _handleSave() async {
+    // Check if audio exists and isn't already a local file
+    Memo memoToSave = widget.memo;
+    if (widget.memo.audioUrl.isNotEmpty && widget.memo.audioUrl.startsWith('http')) {
+      try {
+        final dir = await getApplicationDocumentsDirectory();
+        final audioFile = File('${dir.path}/audio_${widget.memo.id}.mp3');
+        final response = await http.get(Uri.parse(widget.memo.audioUrl));
+        await audioFile.writeAsBytes(response.bodyBytes);
+        
+        memoToSave = Memo(
+          id: widget.memo.id, title: widget.memo.title, sourceUrl: widget.memo.sourceUrl, sourcePlatform: widget.memo.sourcePlatform,
+          thumbnailUrl: widget.memo.thumbnailUrl, date: widget.memo.date, language: widget.memo.language, summary: widget.memo.summary,
+          audioUrl: audioFile.path, // Local path
+          transcript: widget.memo.transcript, vocabulary: widget.memo.vocabulary, grammar: widget.memo.grammar,
+          conjugations: widget.memo.conjugations, words: widget.memo.words, quiz: widget.memo.quiz,
+        );
+      } catch (e) {
+        debugPrint('Failed to download audio file: $e');
+      }
+    }
+
     // Save to storage using Riverpod
-    ref.read(memosProvider.notifier).addMemo(widget.memo);
+    if (!mounted) return;
+    ref.read(memosProvider.notifier).addMemo(memoToSave);
     
     // Show success feedback
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Memo saved to library!'),
-        backgroundColor: Color(0xFF10B981),
-        duration: Duration(seconds: 2),
+      SnackBar(
+        content: Text('memo_detail.saved_library'.tr()),
+        backgroundColor: const Color(0xFF10B981),
+        duration: const Duration(seconds: 2),
       ),
     );
 
