@@ -58,7 +58,9 @@ class RevenueCatService {
 
   Future<bool> purchasePackage(Package package) async {
     try {
-      _customerInfo = await Purchases.purchasePackage(package);
+      final params = PurchaseParams.package(package);
+      final result = await Purchases.purchase(params);
+      _customerInfo = result.customerInfo;
       return isPremiumUser();
     } catch (e) {
       debugPrint('❌ Error purchasing package: $e');

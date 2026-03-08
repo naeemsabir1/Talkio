@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../core/services/revenuecat_service.dart';
@@ -59,6 +60,32 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
   void _finishOnboardingAndGoHome() {
     ref.read(storageServiceProvider).setOnboardingComplete();
     context.go('/home');
+  }
+
+  Future<void> _handleRestore() async {
+    setState(() {
+      _isPurchasing = true;
+    });
+
+    final revenueCat = ref.read(revenueCatServiceProvider);
+    final success = await revenueCat.restorePurchases();
+
+    if (mounted) {
+      setState(() {
+        _isPurchasing = false;
+      });
+
+      if (success) {
+        _finishOnboardingAndGoHome();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No previous purchases found.'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _handleClaimTrial() async {
@@ -251,7 +278,57 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                           ),
                         ),
                       ),
-                      
+
+                      const SizedBox(height: 8),
+
+                      // Restore Purchases
+                      TextButton(
+                        onPressed: _isPurchasing ? null : _handleRestore,
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white54,
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                        ),
+                        child: Text(
+                          'Restore Purchases',
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Terms of Service & Privacy Policy
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/docs/terms.html')),
+                            child: const Text(
+                              'Terms of Service',
+                              style: TextStyle(
+                                color: Colors.white38,
+                                fontSize: 12,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          GestureDetector(
+                            onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/docs/privacy.html')),
+                            child: const Text(
+                              'Privacy Policy',
+                              style: TextStyle(
+                                color: Colors.white38,
+                                fontSize: 12,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
                       const SizedBox(height: 16),
                     ],
                   ),
