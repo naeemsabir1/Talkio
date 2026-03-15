@@ -69,7 +69,7 @@
         "translation": "Traduction"
     },
     "paywall": {
-        "headline": "Les étudiants Talkio Pro ont 5,2x plus de chances d'apprendre plus vite et de devenir bilingues !",
+        "headline": "Les étudiants Talkio Premium ont 5,2x plus de chances d'apprendre plus vite et de devenir bilingues !",
         "features": {
             "full_access": "Accès Total !",
             "full_access_desc": "Premium avec toutes les fonctionnalités débloquées",
@@ -84,14 +84,28 @@
         "yearly": "Annuel",
         "7_days_free": "7 Jours Gratuits",
         "cta_trial": "Commencer mon essai gratuit de 7 jours",
+        "subscription_disclaimer": "Essai gratuit de 7 jours, puis se renouvelle automatiquement au prix sélectionné sauf annulation au moins 24 heures avant la fin de la période d'essai.",
         "cta_continue": "Continuer",
         "restore_purchases": "Restaurer les achats",
         "terms_of_service": "Conditions d'utilisation",
         "privacy_policy": "Politique de confidentialité",
-        "cancel_anytime": "Annulez à tout moment dans les paramètres.",
+        "cancel_anytime": "L'abonnement se renouvelle automatiquement sauf annulation au moins 24 heures avant la fin de la période en cours. Gérez ou annulez dans les réglages de l'App Store.",
         "loading": "Chargement...",
         "error_purchase": "L'achat a échoué. Veuillez réessayer.",
         "error_restore": "La restauration a échoué. Veuillez vérifier.",
         "error_loading_products": "Impossible de charger les prix. Vérifiez votre connexion."
+    },
+    "onboarding_paywall": {
+        "headline": "Profitez de 7 jours\nd'essai gratuit",
+        "subtitle": "Accélérez considérablement votre maîtrise avec Talkio Premium. Débloquez l'accès complet aux outils IA, traductions et suivi illimité du vocabulaire.",
+        "plan_title": "Talkio Premium Annuel",
+        "plan_description": "Essai gratuit de 7 jours, puis se renouvelle automatiquement à {}/an sauf annulation au moins 24 heures avant la fin de l'essai.",
+        "cta_claim": "Obtenir l'essai gratuit",
+        "maybe_later": "Peut-être plus tard",
+        "restore_purchases": "Restaurer les achats",
+        "terms_of_service": "Conditions d'utilisation",
+        "privacy_policy": "Politique de confidentialité",
+        "error_no_purchases": "Aucun achat précédent trouvé.",
+        "error_payment": "Le paiement a échoué. Veuillez réessayer."
     }
 }

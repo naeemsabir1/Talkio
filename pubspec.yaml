@@ -1,7 +1,7 @@
 name: auraly_clone
 description: Talkio - Learn languages with AI.
 publish_to: 'none'
-version: 1.0.0+5
+version: 1.0.0+8
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -52,14 +52,16 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/logo.jpeg"
+  image_path: "assets/logo_perfect.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/logo_perfect.png"
   remove_alpha_ios: true
   min_sdk_android: 21
 
 flutter_native_splash:
   color: "#FFFFFF"
-  image: "assets/logo.jpeg"
+  image: "assets/logo_perfect.png"
   android_12:
-    image: "assets/logo.jpeg"
+    image: "assets/logo_perfect.png"
     color: "#FFFFFF"
   fullscreen: true

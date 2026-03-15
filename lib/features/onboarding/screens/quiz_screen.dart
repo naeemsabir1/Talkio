@@ -450,7 +450,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                   alignment: WrapAlignment.center,
                   spacing: 12,
                   runSpacing: 12,
-                  children: ["Female", "Male", "Other"].map((g) {
+                  children: ["Female", "Male"].map((g) {
                     final isSelected = state.gender == g;
                     return ChoiceChip(
                       label: Text(g, style: TextStyle(

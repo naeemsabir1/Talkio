@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../core/services/revenuecat_service.dart';
@@ -79,8 +80,8 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
         _finishOnboardingAndGoHome();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('No previous purchases found.'),
+          SnackBar(
+            content: Text('onboarding_paywall.error_no_purchases'.tr()),
             backgroundColor: Colors.redAccent,
           ),
         );
@@ -107,8 +108,8 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
         _finishOnboardingAndGoHome();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Payment failed. Please try again.'),
+          SnackBar(
+            content: Text('onboarding_paywall.error_payment'.tr()),
             backgroundColor: Colors.redAccent,
           ),
         );
@@ -226,7 +227,7 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                       
                       // Headline
                       Text(
-                        'Get your 7 days\nFree Trial',
+                        'onboarding_paywall.headline'.tr(),
                         textAlign: TextAlign.center,
                         style: GoogleFonts.outfit(
                           fontSize: 36,
@@ -241,7 +242,7 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                       
                       // Subtitle
                       Text(
-                        'Experience the massive speed boost in your fluency with Talkio Pro. Unlock full access to AI tools, translations, and unlimited vocabulary tracking.',
+                        'onboarding_paywall.subtitle'.tr(),
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
                           fontSize: 16,
@@ -271,7 +272,7 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                         ),
                         child: Text(
-                          'Maybe later',
+                          'onboarding_paywall.maybe_later'.tr(),
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -289,7 +290,7 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                         ),
                         child: Text(
-                          'Restore Purchases',
+                          'onboarding_paywall.restore_purchases'.tr(),
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -305,9 +306,9 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                         children: [
                           GestureDetector(
                             onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/terms.html')),
-                            child: const Text(
-                              'Terms of Service',
-                              style: TextStyle(
+                            child: Text(
+                              'onboarding_paywall.terms_of_service'.tr(),
+                              style: const TextStyle(
                                 color: Colors.white38,
                                 fontSize: 12,
                                 decoration: TextDecoration.underline,
@@ -317,9 +318,9 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                           const SizedBox(width: 16),
                           GestureDetector(
                             onTap: () => launchUrl(Uri.parse('https://naeemsabir1.github.io/Talkio/privacy.html')),
-                            child: const Text(
-                              'Privacy Policy',
-                              style: TextStyle(
+                            child: Text(
+                              'onboarding_paywall.privacy_policy'.tr(),
+                              style: const TextStyle(
                                 color: Colors.white38,
                                 fontSize: 12,
                                 decoration: TextDecoration.underline,
@@ -394,9 +395,9 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Talkio Pro Annual',
-                  style: TextStyle(
+                Text(
+                  'onboarding_paywall.plan_title'.tr(),
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -404,7 +405,7 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '7 days completely free, then ${_yearlyPackage!.storeProduct.priceString}/year. Cancel anytime.',
+                  'onboarding_paywall.plan_description'.tr(args: [_yearlyPackage!.storeProduct.priceString]),
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.7),
                     fontSize: 14,
@@ -452,7 +453,7 @@ class _OnboardingPaywallScreenState extends ConsumerState<OnboardingPaywallScree
                   child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                 )
               : Text(
-                  'Claim free trial',
+                  'onboarding_paywall.cta_claim'.tr(),
                   style: GoogleFonts.outfit(
                     color: Colors.white,
                     fontSize: 20,

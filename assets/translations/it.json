@@ -69,7 +69,7 @@
         "translation": "Traduzione"
     },
     "paywall": {
-        "headline": "Gli studenti Talkio Pro hanno 5.2x probabilità in più di essere fluenti!",
+        "headline": "Gli studenti Talkio Premium hanno 5.2x probabilità in più di essere fluenti!",
         "features": {
             "full_access": "Accesso Totale!",
             "full_access_desc": "Premium con tutte le funzionalità",
@@ -84,14 +84,28 @@
         "yearly": "Annuale",
         "7_days_free": "7 Giorni Gratis",
         "cta_trial": "Inizia prova gratuita di 7 giorni",
+        "subscription_disclaimer": "Prova gratuita di 7 giorni, poi si rinnova automaticamente al prezzo selezionato salvo cancellazione almeno 24 ore prima della fine del periodo di prova.",
         "cta_continue": "Continua",
         "restore_purchases": "Ripristina acquisti",
         "terms_of_service": "Termini di servizio",
         "privacy_policy": "Informativa privacy",
-        "cancel_anytime": "Annulla in qualsiasi momento.",
+        "cancel_anytime": "L'abbonamento si rinnova automaticamente salvo cancellazione almeno 24 ore prima della fine del periodo corrente. Gestisci o annulla nelle impostazioni dell'App Store.",
         "loading": "Caricamento...",
         "error_purchase": "Acquisto non riuscito. Per favore riprova.",
         "error_restore": "Ripristino non riuscito.",
         "error_loading_products": "Impossibile caricare i prezzi."
+    },
+    "onboarding_paywall": {
+        "headline": "Ottieni 7 giorni\ndi prova gratuita",
+        "subtitle": "Sperimenta un enorme miglioramento nella tua padronanza con Talkio Premium. Sblocca l'accesso completo agli strumenti IA, traduzioni e monitoraggio illimitato del vocabolario.",
+        "plan_title": "Talkio Premium Annuale",
+        "plan_description": "Prova gratuita di 7 giorni, poi si rinnova automaticamente a {}/anno salvo cancellazione almeno 24 ore prima della fine del periodo di prova.",
+        "cta_claim": "Ottieni la prova gratuita",
+        "maybe_later": "Forse più tardi",
+        "restore_purchases": "Ripristina acquisti",
+        "terms_of_service": "Termini di servizio",
+        "privacy_policy": "Informativa privacy",
+        "error_no_purchases": "Nessun acquisto precedente trovato.",
+        "error_payment": "Pagamento non riuscito. Per favore riprova."
     }
 }

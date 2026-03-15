@@ -69,7 +69,7 @@
         "translation": "Traducción"
     },
     "paywall": {
-        "headline": "¡Los estudiantes de Talkio Pro tienen 5.2x más probabilidades de aprender más rápido y alcanzar la fluidez!",
+        "headline": "¡Los estudiantes de Talkio Premium tienen 5.2x más probabilidades de aprender más rápido y alcanzar la fluidez!",
         "features": {
             "full_access": "¡Acceso Total!",
             "full_access_desc": "Premium con todas las funciones desbloqueadas",
@@ -84,14 +84,28 @@
         "yearly": "Anual",
         "7_days_free": "7 Días Gratis",
         "cta_trial": "Iniciar mis 7 días de prueba gratis",
+        "subscription_disclaimer": "Prueba gratuita de 7 días, luego se renueva automáticamente al precio seleccionado a menos que se cancele al menos 24 horas antes del final del período de prueba.",
         "cta_continue": "Continuar",
         "restore_purchases": "Restaurar Compras",
         "terms_of_service": "Términos de Servicio",
         "privacy_policy": "Política de Privacidad",
-        "cancel_anytime": "Cancela cuando quieras en Ajustes.",
+        "cancel_anytime": "La suscripción se renueva automáticamente a menos que se cancele al menos 24 horas antes del final del período actual. Gestiona o cancela en los ajustes de App Store.",
         "loading": "Cargando...",
         "error_purchase": "Error en la compra. Inténtalo de nuevo.",
         "error_restore": "Error al restaurar. Asegúrate de tener una compra anterior.",
         "error_loading_products": "No se pudieron cargar los precios. Revisa tu conexión."
+    },
+    "onboarding_paywall": {
+        "headline": "Obtén tus 7 días\nde prueba gratis",
+        "subtitle": "Experimenta un impulso masivo en tu fluidez con Talkio Premium. Desbloquea acceso completo a herramientas de IA, traducciones y seguimiento ilimitado de vocabulario.",
+        "plan_title": "Talkio Premium Anual",
+        "plan_description": "Prueba gratuita de 7 días, luego se renueva automáticamente a {}/año a menos que se cancele al menos 24 horas antes de que finalice la prueba.",
+        "cta_claim": "Reclamar prueba gratuita",
+        "maybe_later": "Quizás más tarde",
+        "restore_purchases": "Restaurar Compras",
+        "terms_of_service": "Términos de Servicio",
+        "privacy_policy": "Política de Privacidad",
+        "error_no_purchases": "No se encontraron compras anteriores.",
+        "error_payment": "El pago falló. Por favor, inténtalo de nuevo."
     }
 }

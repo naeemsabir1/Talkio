@@ -69,7 +69,7 @@
     "translation": "Translation"
   },
   "paywall": {
-    "headline": "Talkio Pro students are 5.2x more likely to learn faster and become fluent!",
+    "headline": "Talkio Premium students are 5.2x more likely to learn faster and become fluent!",
     "features": {
       "full_access": "Full Access!",
       "full_access_desc": "Premium with all features unlocked",
@@ -84,14 +84,28 @@
     "yearly": "Yearly",
     "7_days_free": "7 Days Free",
     "cta_trial": "Start my 7-day free trial",
+    "subscription_disclaimer": "7-day free trial, then automatically renews at the selected price unless canceled at least 24 hours before the end of the trial period.",
     "cta_continue": "Continue",
     "restore_purchases": "Restore Purchases",
     "terms_of_service": "Terms of Service",
     "privacy_policy": "Privacy Policy",
-    "cancel_anytime": "Cancel anytime in App Store settings.",
+    "cancel_anytime": "Subscription automatically renews unless canceled at least 24 hours before the end of the current period. Manage or cancel in App Store settings.",
     "loading": "Loading...",
     "error_purchase": "Purchase failed. Please try again.",
     "error_restore": "Restore failed. Please try again or ensure you have a previous purchase.",
     "error_loading_products": "Could not load pricing. Please check your internet connection."
+  },
+  "onboarding_paywall": {
+    "headline": "Get your 7 days\nFree Trial",
+    "subtitle": "Experience the massive speed boost in your fluency with Talkio Premium. Unlock full access to AI tools, translations, and unlimited vocabulary tracking.",
+    "plan_title": "Talkio Premium Annual",
+    "plan_description": "7-day free trial, then automatically renews at {}/year unless canceled at least 24 hours before the trial ends.",
+    "cta_claim": "Claim free trial",
+    "maybe_later": "Maybe later",
+    "restore_purchases": "Restore Purchases",
+    "terms_of_service": "Terms of Service",
+    "privacy_policy": "Privacy Policy",
+    "error_no_purchases": "No previous purchases found.",
+    "error_payment": "Payment failed. Please try again."
   }
 }

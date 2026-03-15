@@ -230,6 +230,65 @@ You MUST respond with valid JSON and nothing else.
 
 NOTE: Do NOT include any translation fields. Translation is handled separately.
 
+═══════════════════════════════════════════════════════════════════
+STRICT LANGUAGE MAPPING RULES (MUST FOLLOW FOR EVERY FIELD):
+═══════════════════════════════════════════════════════════════════
+
+Pay close attention to the ui_language ({app_ui_language}) and target_language ({target_language}).
+Even if the target_language is the SAME as the video's source_language (e.g., an English video
+and the user is learning English), you must still follow these rules exactly. The ui_language
+may differ from both (e.g., the app UI is in Spanish).
+
+• Summary / Title:         Strictly in the ui_language ({app_ui_language}).
+• Vocabulary → word:       In the target_language ({target_language}).
+• Vocabulary → pronunciation: Standard phonetic representation of the target_language ({target_language}).
+• Vocabulary → meaning:    Strictly in the ui_language ({app_ui_language}).
+• Vocabulary → explanation: Strictly in the ui_language ({app_ui_language}).
+• Grammar → title:         Strictly in the ui_language ({app_ui_language}).
+• Grammar → explanation:   Strictly in the ui_language ({app_ui_language}).
+• Grammar → example sentence: In the target_language ({target_language}).
+• Grammar → example translation: Strictly in the ui_language ({app_ui_language}).
+• Pronouns → category:     Strictly in the ui_language ({app_ui_language}).
+• Pronouns → word:         In the target_language ({target_language}).
+• Pronouns → explanation:  Strictly in the ui_language ({app_ui_language}).
+• Pronouns → example sentence: In the target_language ({target_language}).
+• Pronouns → example translation: Strictly in the ui_language ({app_ui_language}).
+• Conjugations → form:     Strictly in the ui_language ({app_ui_language}).
+• Conjugations → example:  In the target_language ({target_language}).
+• Conjugations → translation: Strictly in the ui_language ({app_ui_language}).
+• Conjugations → explanation: Strictly in the ui_language ({app_ui_language}).
+• Quiz → question:         Strictly in the ui_language ({app_ui_language}).
+• Quiz → hint:             Strictly in the ui_language ({app_ui_language}).
+• Quiz → explanation:      Strictly in the ui_language ({app_ui_language}).
+• Quiz → correct_answer:   In the target_language ({target_language}).
+• Quiz → wrong_answers:    In the target_language ({target_language}).
+
+═══════════════════════════════════════════════════════════════════
+⚠️  CRITICAL EDGE CASE — source_language == target_language
+═══════════════════════════════════════════════════════════════════
+
+When the video's source language ({source_language}) is THE SAME as the
+user's target learning language ({target_language}), this is a special case.
+Example: a Spanish-speaking user imports an English video to learn English.
+
+In this scenario the AI MUST be extra careful:
+  1. The user's NATIVE language is the app_ui_language ({app_ui_language}).
+     They are a BEGINNER in {target_language}. They CANNOT understand
+     explanations written in {target_language}.
+  2. ALL descriptive, explanatory, and contextual fields — summary, title,
+     meanings, explanations, grammar explanations, hints, quiz questions —
+     MUST be written in {app_ui_language}. NEVER in {target_language}.
+  3. ONLY the raw learning material — vocabulary words, example sentences,
+     correct/wrong quiz answers, conjugation examples, pronoun words —
+     should remain in {target_language}.
+  4. Ask yourself before writing EVERY field: "Is this field meant to TEACH
+     or EXPLAIN something?" → write it in {app_ui_language}.
+     "Is this field the TARGET content the user is memorizing?" → write it
+     in {target_language}.
+
+VIOLATION OF THIS RULE RENDERS THE LESSON UNUSABLE. ENFORCE STRICTLY.
+═══════════════════════════════════════════════════════════════════
+
 The JSON must have this exact structure:
 {{
   "title": "A short, catchy title for this lesson (max 6 words, in {app_ui_language})",

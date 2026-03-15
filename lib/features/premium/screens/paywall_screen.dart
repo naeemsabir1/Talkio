@@ -404,7 +404,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primary.withOpacity(0.15) : AppTheme.surface,
+          color: isSelected ? AppTheme.primary.withOpacity(0.15) : Colors.white.withOpacity(0.06),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? AppTheme.primary : Colors.white12,

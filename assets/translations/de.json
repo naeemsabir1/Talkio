@@ -69,7 +69,7 @@
         "translation": "Übersetzung"
     },
     "paywall": {
-        "headline": "Talkio Pro-Schüler lernen 5,2-mal schneller und sprechen fließend!",
+        "headline": "Talkio Premium-Schüler lernen 5,2-mal schneller und sprechen fließend!",
         "features": {
             "full_access": "Voller Zugriff!",
             "full_access_desc": "Premium mit allen Funktionen",
@@ -84,14 +84,28 @@
         "yearly": "Jährlich",
         "7_days_free": "7 Tage kostenlos",
         "cta_trial": "Starte mein 7-tägiges Probeabo",
+        "subscription_disclaimer": "7-tägige kostenlose Testphase, danach verlängert sich das Abo automatisch zum ausgewählten Preis, sofern nicht mindestens 24 Stunden vor Ablauf der Testphase gekündigt wird.",
         "cta_continue": "Weiter",
         "restore_purchases": "Käufe wiederherstellen",
         "terms_of_service": "Nutzungsbedingungen",
         "privacy_policy": "Datenschutzrichtlinie",
-        "cancel_anytime": "Jederzeit kündbar.",
+        "cancel_anytime": "Das Abonnement verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ablauf des aktuellen Zeitraums gekündigt wird. Verwalte oder kündige in den App Store-Einstellungen.",
         "loading": "Wird geladen...",
         "error_purchase": "Kauf fehlgeschlagen. Bitte erneut versuchen.",
         "error_restore": "Wiederherstellung fehlgeschlagen.",
         "error_loading_products": "Preise konnten nicht geladen werden."
+    },
+    "onboarding_paywall": {
+        "headline": "Sichere dir 7 Tage\nkostenlose Testversion",
+        "subtitle": "Erlebe einen massiven Fortschritt in deiner Sprachgewandtheit mit Talkio Premium. Schalte vollen Zugriff auf KI-Tools, Übersetzungen und unbegrenztes Vokabeltracking frei.",
+        "plan_title": "Talkio Premium Jahresabo",
+        "plan_description": "7-tägige kostenlose Testphase, danach verlängert sich das Abo automatisch zu {}/Jahr, sofern nicht mindestens 24 Stunden vor Ablauf der Testphase gekündigt wird.",
+        "cta_claim": "Kostenlose Testversion starten",
+        "maybe_later": "Vielleicht später",
+        "restore_purchases": "Käufe wiederherstellen",
+        "terms_of_service": "Nutzungsbedingungen",
+        "privacy_policy": "Datenschutzrichtlinie",
+        "error_no_purchases": "Keine früheren Käufe gefunden.",
+        "error_payment": "Zahlung fehlgeschlagen. Bitte erneut versuchen."
     }
 }
